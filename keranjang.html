@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Keranjang Belanja | PlayPass</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .cart-header { padding: 40px 0 20px; }
+        .cart-header h1 { font-size: 2.5rem; margin-bottom: 10px; }
+        
+        .cart-layout { display: flex; gap: 40px; padding-bottom: 60px; align-items: flex-start; }
+        
+        .cart-items { flex: 2.5; display: flex; flex-direction: column; gap: 15px; }
+        
+        .cart-item-card { background-color: var(--bg-card); border: 1px solid #2A3241; border-radius: 12px; padding: 25px; display: flex; justify-content: space-between; align-items: center; }
+        .item-details { display: flex; gap: 20px; align-items: center; }
+        .item-details img { width: 90px; height: 90px; border-radius: 12px; object-fit: cover; } 
+        .item-text h3 { font-size: 1.3rem; margin-bottom: 5px; color: var(--text-main); }
+        .item-text p { color: var(--text-muted); font-size: 0.95rem; line-height: 1.4; }
+        
+        .item-price-action { text-align: right; }
+        .item-price-action h4 { font-size: 1.4rem; color: var(--text-main); margin-bottom: 10px; }
+        .btn-delete { background-color: transparent; color: #EF4444; border: 1px solid #EF4444; padding: 6px 18px; border-radius: 6px; cursor: pointer; font-size: 0.9rem; transition: 0.2s; }
+        .btn-delete:hover { background-color: #EF4444; color: white; }
+
+        .cart-summary { flex: 1; min-width: 320px; background-color: var(--bg-card); padding: 30px; border-radius: 12px; border: 1px solid #2A3241; position: sticky; top: 90px; }
+        .cart-summary h2 { font-size: 1.4rem; margin-bottom: 25px; padding-bottom: 15px; border-bottom: 1px solid #2A3241; }
+        .summary-row { display: flex; justify-content: space-between; margin-bottom: 15px; color: var(--text-muted); font-size: 1.05rem; }
+        .total-price { font-size: 1.6rem; font-weight: bold; color: var(--text-main); margin: 25px 0; text-align: right; border-top: 1px solid #2A3241; padding-top: 25px; }
+        .btn-full { width: 100%; text-align: center; display: block; padding: 15px 0; font-size: 1.1rem; border: none; cursor: pointer; font-weight: bold; }
+
+        @media (max-width: 768px) {
+            .cart-layout { flex-direction: column; }
+            .cart-summary { position: static; width: 100%; min-width: auto; }
+            .cart-item-card { flex-direction: column; align-items: flex-start; gap: 20px; }
+            .item-price-action { text-align: left; width: 100%; display: flex; justify-content: space-between; align-items: center; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="container navbar">
+            <a href="index.html" class="logo">Play<span>Pass</span></a>
+            <ul class="nav-links">
+                <li><a href="index.html">Beranda</a></li>
+                <li><a href="katalog.html">Katalog</a></li>
+                <li><a href="arsip-artikel.html">Artikel</a></li>
+                <li><a href="history.html">Histori</a></li>
+            </ul>
+            <div class="nav-actions">
+                <button class="btn-search-icon" onclick="openSearchModal()" title="Cari Game">🔍</button>
+                <a href="keranjang.html" class="btn-cart">🛒 <span class="cart-badge">1</span></a>
+                <a href="dashboard.html" class="btn btn-outline">Masuk</a>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        <section class="cart-header">
+            <h1>Keranjang Belanja</h1>
+            <p style="color: var(--text-muted);">Selesaikan pembayaranmu sebelum waktu habis.</p>
+        </section>
+
+        <div class="cart-layout">
+            <div class="cart-items">
+                <div class="cart-item-card" id="item-1">
+                    <div class="item-details">
+                         <img src="assets/images/mlbb2.png" alt="Mobile Legends">
+                        <div class="item-text">
+                            <h3>Mobile Legends: Bang Bang</h3>
+                            <p>Item: 86 Diamonds</p>
+                            <p>User ID: 12345678 (1234)</p>
+                        </div>
+                    </div>
+                    <div class="item-price-action">
+                        <h4>Rp 24.000</h4>
+                        <button class="btn-delete" onclick="hapusItem()">Hapus</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="cart-summary">
+                <h2>Total Tagihan</h2>
+                <div class="summary-row">
+                    <span>Subtotal (1 Item):</span>
+                    <span>Rp 24.000</span>
+                </div>
+                <div class="summary-row">
+                    <span>Biaya Admin (GoPay):</span>
+                    <span>Rp 0</span>
+                </div>
+                
+                <div class="total-price" id="total-tagihan">Rp 24.000</div>
+                
+                <a href="pembayaran.html" class="btn btn-primary btn-full">Lanjut Pembayaran</a>
+                <a href="katalog.html" class="btn btn-outline btn-full" style="margin-top: 10px;">Tambah Game Lain</a>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container footer-content">
+            <a href="index.html" class="logo">Play<span>Pass</span></a>
+            <p class="footer-text">Top up game cepat, aman, dan tanpa ribet. Layanan pelanggan 24/7.</p>
+            <p class="footer-text">© 2026 All Rights Reserved | Made by PLAYPASS</p>
+        </div>
+    </footer>
+
+    <div id="searchModal" class="search-modal">
+        <div class="search-modal-content">
+            <div class="search-modal-header">
+                <span style="font-size: 1.2rem; color: var(--text-muted);">🔍</span>
+                <input type="text" id="searchInput" placeholder="Cari game (misal: Mobile Legends)..." onkeyup="liveSearch()">
+                
+                <button onclick="goToSearchPage()" style="background-color: #b937f5; color: white; border: none; padding: 8px 20px; border-radius: 6px; font-weight: bold; cursor: pointer; margin-right: 10px; transition: 0.3s;">
+                    Cari
+                </button>
+                
+                <button class="close-btn" onclick="closeSearchModal()">✖</button>
+            </div>
+            <div class="search-results" id="searchResults">
+                <div style="padding: 20px; text-align: center; color: var(--text-muted);">Ketik nama game untuk mencari...</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function hapusItem() {
+            const konfirmasi = confirm("Yakin ingin menghapus item ini dari keranjang?");
+            if (konfirmasi) {
+                document.getElementById('item-1').style.display = 'none';
+                document.getElementById('total-tagihan').innerText = 'Rp 0';
+                alert("Item berhasil dihapus. Keranjangmu sekarang kosong.");
+            }
+        }
+
+        const searchModal = document.getElementById('searchModal');
+        const searchInput = document.getElementById('searchInput');
+        const searchResults = document.getElementById('searchResults');
+
+        const dummyGames = [
+            { name: "Mobile Legends: Bang Bang", pub: "Moonton", img: "assets/images/mlbb2.png", link: "detail-produk.html" },
+            { name: "Valorant", pub: "Riot Games", img: "assets/images/valo.png", link: "#" },
+            { name: "PUBG Mobile", pub: "Tencent", img: "assets/images/pubg.png", link: "detail-produk.html" },
+            { name: "Genshin Impact", pub: "HoYoverse", img: "assets/images/GI.png", link: "#" },
+            { name: "Free Fire", pub: "Garena", img: "assets/images/ff.png", link: "#" },
+            { name: "Honor of Kings", pub: "Level Infinite", img: "assets/images/hok.png", link: "#" },
+            { name: "eFootball", pub: "Konami", img: "assets/images/efb.png", link: "#" }
+        ];
+
+        function openSearchModal() { searchModal.style.display = 'flex'; searchInput.focus(); }
+        function closeSearchModal() { searchModal.style.display = 'none'; searchInput.value = ''; searchResults.innerHTML = '<div style="padding: 20px; text-align: center; color: var(--text-muted);">Ketik nama game untuk mencari...</div>'; }
+
+        function liveSearch() {
+            const query = searchInput.value.toLowerCase();
+            searchResults.innerHTML = '';
+            if (query.trim() === '') { searchResults.innerHTML = '<div style="padding: 20px; text-align: center; color: var(--text-muted);">Ketik nama game untuk mencari...</div>'; return; }
+            const filtered = dummyGames.filter(game => game.name.toLowerCase().includes(query));
+            if (filtered.length === 0) { searchResults.innerHTML = '<div style="padding: 20px; text-align: center; color: var(--text-muted);">Game tidak ditemukan.</div>'; return; }
+            filtered.forEach(game => {
+                const item = document.createElement('a'); item.href = game.link; item.className = 'result-item';
+                item.innerHTML = `<img src="${game.img}" alt="${game.name}"><div class="result-info"><h4>${game.name}</h4><p>${game.pub}</p></div>`;
+                searchResults.appendChild(item);
+            });
+        }
+
+        function goToSearchPage() {
+            const query = document.getElementById('searchInput').value;
+            if(query.trim() !== '') {
+                window.location.href = 'search.html?q=' + encodeURIComponent(query);
+            } else {
+                window.location.href = 'search.html';
+            }
+        }
+    </script>
+</body>
+</html>

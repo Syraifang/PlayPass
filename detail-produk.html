@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detail Top Up Mobile Legends | PlayPass</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+      .detail-layout { display: flex; gap: 30px; padding: 40px 0; align-items: flex-start; }
+        .left-column { flex: 2.5; display: flex; flex-direction: column; gap: 20px; }
+        .right-column { flex: 1; position: sticky; top: 90px; }
+
+        .game-banner { display: flex; gap: 20px; align-items: center; background-color: var(--bg-card); padding: 20px; border-radius: 12px; border: 1px solid #2A3241; }
+        .game-banner img { width: 100px; height: 100px; border-radius: 16px; object-fit: cover; }
+        .game-info h1 { font-size: 1.8rem; margin-bottom: 5px; }
+        .game-info p { color: var(--text-muted); font-size: 0.9rem; }
+
+        .step-card { background-color: var(--bg-card); padding: 25px; border-radius: 12px; border: 1px solid #2A3241; }
+        .step-title { display: flex; align-items: center; gap: 15px; margin-bottom: 20px; font-size: 1.2rem; font-weight: bold; }
+        .step-number { background-color: var(--accent); color: white; width: 35px; height: 35px; display: flex; align-items: center; justify-content: center; border-radius: 50%; font-size: 1.2rem; }
+
+        .form-row { display: flex; gap: 15px; }
+        .input-group { flex: 1; }
+        .input-group input { width: 100%; padding: 12px 15px; background-color: var(--bg-dark); border: 1px solid #2A3241; border-radius: 8px; color: var(--text-main); }
+        .input-group input:focus { outline: none; border-color: var(--accent); }
+
+        .grid-options { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 15px; }
+        
+        .option-card { background-color: var(--bg-dark); border: 1px solid #2A3241; padding: 15px; border-radius: 8px; text-align: center; cursor: pointer; transition: 0.2s; }
+        .option-card:hover, .option-card.active { border-color: var(--accent); background-color: rgba(124, 58, 237, 0.1); }
+        .option-card h3 { font-size: 1.1rem; margin-bottom: 5px; }
+        .option-card p { font-size: 0.85rem; color: var(--text-muted); }
+
+        .summary-card { background-color: var(--bg-card); padding: 25px; border-radius: 12px; border: 1px solid #2A3241; }
+        .summary-card h2 { font-size: 1.3rem; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 1px solid #2A3241; }
+        .summary-row { display: flex; justify-content: space-between; margin-bottom: 15px; color: var(--text-muted); }
+        .total-price { font-size: 1.5rem; font-weight: bold; color: var(--text-main); margin: 20px 0; text-align: right; }
+        .btn-full { width: 100%; text-align: center; display: block; padding: 15px 0; font-size: 1.1rem; border: none;}
+
+        @media (max-width: 768px) { .detail-layout { flex-direction: column; } .right-column { position: static; width: 100%; } }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="container navbar">
+            <a href="index.html" class="logo">Play<span>Pass</span></a>
+            <ul class="nav-links">
+                <li><a href="index.html">Beranda</a></li>
+                <li><a href="katalog.html">Katalog</a></li>
+                <li><a href="arsip-artikel.html">Artikel</a></li>
+                <li><a href="history.html">Histori</a></li>
+            </ul>
+            <div class="nav-actions">
+                <button class="btn-search-icon" onclick="openSearchModal()" title="Cari Game">🔍</button>
+                <a href="keranjang.html" class="btn-cart">🛒 <span class="cart-badge">1</span></a>
+                <a href="dashboard.html" class="btn btn-outline">Masuk</a>
+            </div>
+        </div>
+    </header>
+
+    <main class="container detail-layout">
+        <div class="left-column">
+            <div class="game-banner">
+                <img src="assets/images/mlbb2.png" alt="Mobile Legends">
+                <div class="game-info">
+                    <h1>Mobile Legends: Bang Bang</h1>
+                    <p>Proses otomatis, langsung masuk dalam hitungan detik.</p>
+                </div>
+            </div>
+
+            <div class="step-card">
+                <div class="step-title"><div class="step-number">1</div>Masukkan Data Akun</div>
+                <div class="form-row">
+                    <div class="input-group"><input type="text" id="user-id" placeholder="Masukkan User ID"></div>
+                    <div class="input-group" style="flex: 0.5;"><input type="text" id="zone-id" placeholder="(Zone ID)"></div>
+                </div>
+            </div>
+
+            <div class="step-card">
+                <div class="step-title"><div class="step-number">2</div>Pilih Nominal Top Up</div>
+                <div class="grid-options">
+                    <div class="option-card nominal-card active" data-name="86 Diamonds" data-price="24000">
+                        <h3>86 Diamonds</h3><p>Rp 24.000</p>
+                    </div>
+                    <div class="option-card nominal-card" data-name="172 Diamonds" data-price="48000">
+                        <h3>172 Diamonds</h3><p>Rp 48.000</p>
+                    </div>
+                    <div class="option-card nominal-card" data-name="257 Diamonds" data-price="72000">
+                        <h3>257 Diamonds</h3><p>Rp 72.000</p>
+                    </div>
+                    <div class="option-card nominal-card" data-name="344 Diamonds" data-price="96000">
+                        <h3>344 Diamonds</h3><p>Rp 96.000</p>
+                    </div>
+                    <div class="option-card nominal-card" data-name="706 Diamonds" data-price="192000">
+                        <h3>706 Diamonds</h3><p>Rp 192.000</p>
+                    </div>
+                    <div class="option-card nominal-card" data-name="Super Pass" data-price="144000">
+                        <h3>Super Pass</h3><p>Rp 144.000</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="step-card">
+                <div class="step-title"><div class="step-number">3</div>Pilih Metode Pembayaran</div>
+                <div class="grid-options">
+                    <div class="option-card payment-card active" data-name="GoPay" data-admin="0">
+                        <h3 style="color: #4edf7e;">GoPay</h3><p>Bebas Biaya Admin</p>
+                    </div>
+                    <div class="option-card payment-card" data-name="OVO" data-admin="500">
+                        <h3 style="color: #72bdfa;">Dana</h3><p>+ Rp 500</p>
+                    </div>
+                    <div class="option-card payment-card" data-name="BCA VA" data-admin="1000">
+                        <h3 style="color: #0080ff;">PayPal</h3><p>+ Rp 5.000</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="right-column">
+            <div class="summary-card">
+                <h2>Ringkasan Pesanan</h2>
+                <div class="summary-row"><span>Item:</span><span id="summary-item" style="color: var(--text-main);">86 Diamonds</span></div>
+                <div class="summary-row"><span>Metode:</span><span id="summary-method" style="color: var(--text-main);">GoPay</span></div>
+                <div class="summary-row"><span>Biaya Admin:</span><span id="summary-admin" style="color: var(--text-main);">Rp 0</span></div>
+                <div class="total-price" id="summary-total">Rp 24.000</div>
+                <button onclick="prosesKeranjang()" class="btn btn-primary btn-full">Masukkan Keranjang</button>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container footer-content">
+            <a href="index.html" class="logo">Play<span>Pass</span></a>
+            <p class="footer-text">Top up game cepat, aman, dan tanpa ribet. Layanan pelanggan 24/7.</p>
+            <p class="footer-text">© 2026 All Rights Reserved | Made by PLAYPASS</p>
+        </div>
+    </footer>
+
+    <div id="searchModal" class="search-modal">
+        <div class="search-modal-content">
+            <div class="search-modal-header">
+                <span style="font-size: 1.2rem; color: var(--text-muted);">🔍</span>
+                <input type="text" id="searchInput" placeholder="Cari game (misal: Mobile Legends)..." onkeyup="liveSearch()">
+                <button onclick="goToSearchPage()" style="background-color: #b937f5; color: white; border: none; padding: 8px 20px; border-radius: 6px; font-weight: bold; cursor: pointer; margin-right: 10px; transition: 0.3s;">
+                    Cari
+                </button>
+                <button class="close-btn" onclick="closeSearchModal()">✖</button>
+            </div>
+            <div class="search-results" id="searchResults">
+                <div style="padding: 20px; text-align: center; color: var(--text-muted);">Ketik nama game untuk mencari...</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentPrice = 24000; let currentAdmin = 0;
+        const elSummaryItem = document.getElementById('summary-item');
+        const elSummaryMethod = document.getElementById('summary-method');
+        const elSummaryAdmin = document.getElementById('summary-admin');
+        const elSummaryTotal = document.getElementById('summary-total');
+
+        function formatRupiah(angka) { return 'Rp ' + angka.toLocaleString('id-ID'); }
+        function updateTotal() { const total = currentPrice + currentAdmin; elSummaryTotal.innerText = formatRupiah(total); }
+
+        const nominalCards = document.querySelectorAll('.nominal-card');
+        nominalCards.forEach(card => {
+            card.addEventListener('click', function() {
+                nominalCards.forEach(c => c.classList.remove('active')); this.classList.add('active');
+                const name = this.getAttribute('data-name'); currentPrice = parseInt(this.getAttribute('data-price'));
+                elSummaryItem.innerText = name; updateTotal();
+            });
+        });
+
+        const paymentCards = document.querySelectorAll('.payment-card');
+        paymentCards.forEach(card => {
+            card.addEventListener('click', function() {
+                paymentCards.forEach(c => c.classList.remove('active')); this.classList.add('active');
+                const name = this.getAttribute('data-name'); currentAdmin = parseInt(this.getAttribute('data-admin'));
+                elSummaryMethod.innerText = name; elSummaryAdmin.innerText = currentAdmin === 0 ? 'Rp 0' : formatRupiah(currentAdmin); updateTotal();
+            });
+        });
+
+        function prosesKeranjang() {
+            const userId = document.getElementById('user-id').value;
+            if(!userId) { alert("Tolong masukkan User ID kamu dulu!"); return; }
+            alert("Berhasil! " + elSummaryItem.innerText + " ditambahkan ke keranjang.");
+            window.location.href = "keranjang.html"; 
+        }
+
+        const searchModal = document.getElementById('searchModal');
+        const searchInput = document.getElementById('searchInput');
+        const searchResults = document.getElementById('searchResults');
+        const dummyGames = [
+            { name: "Mobile Legends: Bang Bang", pub: "Moonton", img: "assets/images/mlbb2.png", link: "detail-produk.html" },
+            { name: "Valorant", pub: "Riot Games", img: "assets/images/valo.png", link: "#" },
+            { name: "PUBG Mobile", pub: "Tencent", img: "assets/images/pubg.png", link: "detail-produk.html" }
+        ];
+
+        function openSearchModal() { searchModal.style.display = 'flex'; searchInput.focus(); }
+        function closeSearchModal() { searchModal.style.display = 'none'; searchInput.value = ''; searchResults.innerHTML = '<div style="padding: 20px; text-align: center; color: var(--text-muted);">Ketik nama game untuk mencari...</div>'; }
+
+        function goToSearchPage() {
+            const query = document.getElementById('searchInput').value;
+            if(query.trim() !== '') {
+                window.location.href = 'search.html?q=' + encodeURIComponent(query);
+            } else {
+                window.location.href = 'search.html';
+            }
+        }
+
+        function liveSearch() {
+            const query = searchInput.value.toLowerCase(); searchResults.innerHTML = '';
+            if (query.trim() === '') { searchResults.innerHTML = '<div style="padding: 20px; text-align: center; color: var(--text-muted);">Ketik nama game untuk mencari...</div>'; return; }
+            const filtered = dummyGames.filter(game => game.name.toLowerCase().includes(query));
+            if (filtered.length === 0) { searchResults.innerHTML = '<div style="padding: 20px; text-align: center; color: var(--text-muted);">Game tidak ditemukan.</div>'; return; }
+            filtered.forEach(game => {
+                const item = document.createElement('a'); item.href = game.link; item.className = 'result-item';
+                item.innerHTML = `<img src="${game.img}" alt="${game.name}"><div class="result-info"><h4>${game.name}</h4><p>${game.pub}</p></div>`;
+                searchResults.appendChild(item);
+            });
+        }
+    </script>
+</body>
+</html>

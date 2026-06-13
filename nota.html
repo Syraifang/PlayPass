@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nota Transaksi - PlayPass</title>
+    <style>
+        :root {
+            --text-dark: #1F2937;
+            --text-gray: #6B7280;
+            --border-color: #E5E7EB;
+            --accent: #7C3AED;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: var(--text-dark);
+            background-color: #F3F4F6;
+            margin: 0;
+            padding: 40px 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .invoice-box {
+            background-color: #FFFFFF;
+            max-width: 800px;
+            width: 100%;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            border: 1px solid var(--border-color);
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+        }
+
+        .logo h1 {
+            margin: 0;
+            font-size: 2rem;
+            color: var(--text-dark);
+        }
+
+        .logo span {
+            color: var(--accent);
+        }
+
+        .company-info {
+            text-align: right;
+            font-size: 0.9rem;
+            color: var(--text-gray);
+            line-height: 1.5;
+        }
+
+        .invoice-title {
+            text-align: center;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--text-gray);
+            margin-bottom: 30px;
+        }
+
+        .info-section {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 30px;
+        }
+
+        .info-block {
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        .info-block strong {
+            display: block;
+            margin-bottom: 5px;
+            color: var(--text-dark);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 30px;
+        }
+
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        th {
+            background-color: #F9FAFB;
+            font-weight: 600;
+            color: var(--text-gray);
+        }
+
+        .text-right { text-align: right; }
+        .text-center { text-align: center; }
+
+        .total-section {
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 40px;
+        }
+
+        .total-box {
+            width: 300px;
+        }
+
+        .total-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            font-size: 0.95rem;
+        }
+
+        .total-row.grand-total {
+            border-top: 2px solid var(--text-dark);
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: var(--accent);
+            padding-top: 15px;
+        }
+
+        .footer {
+            text-align: center;
+            font-size: 0.85rem;
+            color: var(--text-gray);
+            border-top: 1px solid var(--border-color);
+            padding-top: 20px;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 5px 12px;
+            background-color: rgba(16, 185, 129, 0.1);
+            color: #10B981;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        .action-buttons {
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        .btn-print {
+            background-color: var(--accent);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 1rem;
+            font-weight: bold;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .btn-print:hover {
+            opacity: 0.9;
+        }
+
+        @media print {
+            body { background-color: white; padding: 0; }
+            .invoice-box { box-shadow: none; border: none; padding: 0; max-width: 100%; }
+            .action-buttons { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="invoice-box">
+        <div class="header">
+            <div class="logo">
+                <h1>Play<span>Pass</span></h1>
+            </div>
+            <div class="company-info">
+                <strong>PlayPass Indonesia</strong><br>
+                Jl. No. 4-6, Surabaya<br>
+                support@playpass.id<br>
+                +62 812 3456 7890
+            </div>
+        </div>
+
+        <h2 class="invoice-title">Nota Transaksi</h2>
+
+        <div class="info-section">
+            <div class="info-block">
+                <strong>Ditagihkan Kepada:</strong>
+                Siti Aminah<br>
+                siti.aminah@email.com<br>
+                081298765432
+            </div>
+            <div class="info-block" style="text-align: right;">
+                <strong>Detail Pesanan:</strong>
+                No. Order: #PP-112233445<br>
+                Tanggal: 05 Juni 2026, 09:15 WIB<br>
+                Metode Pembayaran: QRIS<br>
+                Status: <span class="status-badge">Berhasil</span>
+            </div>
+        </div>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Deskripsi Produk</th>
+                    <th>Detail Target (User ID)</th>
+                    <th class="text-center">Kuantitas</th>
+                    <th class="text-right">Harga</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                        <strong>Valorant</strong><br>
+                        <span style="font-size: 0.85rem; color: var(--text-gray);">1125 VP (Valorant Points)</span>
+                    </td>
+                    <td>PlayerOne#123</td>
+                    <td class="text-center">1</td>
+                    <td class="text-right">Rp 150.000</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="total-section">
+            <div class="total-box">
+                <div class="total-row">
+                    <span>Subtotal</span>
+                    <span>Rp 150.000</span>
+                </div>
+                <div class="total-row">
+                    <span>Biaya Layanan</span>
+                    <span>Rp 0</span>
+                </div>
+                <div class="total-row grand-total">
+                    <span>Total Keseluruhan</span>
+                    <span>Rp 150.000</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p>Terima kasih telah berbelanja di PlayPass! Top up game cepat, aman, dan tanpa ribet.</p>
+            <p style="font-size: 0.75rem;">Dokumen ini adalah bukti pembayaran yang sah yang dihasilkan secara otomatis oleh sistem.</p>
+        </div>
+
+        <div class="action-buttons">
+            <button class="btn-print" onclick="window.print()">🖨️ Cetak / Simpan PDF</button>
+            <button class="btn-print" style="background-color: transparent; border: 1px solid var(--text-gray); color: var(--text-gray); margin-left: 10px;" onclick="window.close()">Tutup</button>
+        </div>
+    </div>
+
+</body>
+</html>

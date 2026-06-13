@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pencarian Game | PlayPass</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .search-page-layout {
+            display: flex;
+            gap: 30px;
+            padding: 40px 0 60px;
+            align-items: flex-start;
+            width: 100%;
+        }
+
+        .search-sidebar {
+            width: 280px; 
+            flex-shrink: 0; 
+            background-color: var(--bg-card);
+            border: 1px solid #2A3241;
+            border-radius: 12px;
+            padding: 25px;
+            position: sticky;
+            top: 90px;
+        }
+
+        .search-results-content {
+            flex: 1; 
+            width: 100%;
+        }
+
+        .filter-group {
+            margin-bottom: 25px;
+            border-bottom: 1px solid #2A3241;
+            padding-bottom: 20px;
+        }
+
+        .filter-group:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+            margin-bottom: 0;
+        }
+
+        .filter-group h3 {
+            font-size: 1.1rem;
+            color: var(--text-main);
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .sidebar-input {
+            width: 100%;
+            padding: 10px 15px;
+            background-color: var(--bg-dark);
+            border: 1px solid #2A3241;
+            border-radius: 8px;
+            color: var(--text-main);
+            outline: none;
+            font-size: 0.95rem;
+            margin-bottom: 15px;
+        }
+        .sidebar-input:focus { border-color: var(--accent); }
+
+        .filter-label {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            margin-bottom: 10px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .filter-label:hover { color: var(--text-main); }
+        .filter-label input {
+            accent-color: var(--accent);
+            width: 16px;
+            height: 16px;
+            cursor: pointer;
+        }
+
+        .search-results-content {
+            flex: 3;
+        }
+
+        .results-header {
+            margin-bottom: 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .results-header h2 { font-size: 1.6rem; color: var(--text-main); }
+        .results-header span { color: var(--text-muted); font-size: 0.95rem; }
+
+        .results-grid {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .game-card {
+            background-color: var(--bg-card);
+            padding: 20px;
+            border-radius: 12px;
+            width: 210px;
+            text-align: center;
+            border: 1px solid #2A3241;
+            transition: 0.3s;
+            text-decoration: none;
+            color: var(--text-main);
+            display: block;
+        }
+        .game-card:hover { transform: translateY(-5px); border-color: var(--accent); box-shadow: 0 10px 20px rgba(0,0,0,0.2); }
+        .game-img-container { width: 100%; height: 120px; border-radius: 12px; overflow: hidden; margin-bottom: 15px; background-color: #F8FAFC; display: flex; align-items: center; justify-content: center; }
+        .game-img-container img { width: 100%; height: 100%; object-fit: contain; transition: transform 0.3s ease; display: block; }
+        .game-card:hover .game-img-container img { transform: scale(1.1); }
+        .publisher { font-size: 0.85rem; color: var(--text-muted); margin-top: 5px; }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--text-muted);
+            background-color: var(--bg-card);
+            border: 1px solid #2A3241;
+            border-radius: 12px;
+            width: 100%;
+        }
+
+        @media (max-width: 992px) {
+            .search-page-layout { flex-direction: column; }
+            .search-sidebar { width: 100%; position: static; }
+            .game-card { width: calc(50% - 10px); } 
+        }
+        @media (max-width: 576px) {
+            .game-card { width: 100%; } 
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="container navbar">
+            <a href="index.html" class="logo">Play<span>Pass</span></a>
+            <ul class="nav-links">
+                <li><a href="index.html">Beranda</a></li>
+                <li><a href="katalog.html">Katalog</a></li>
+                <li><a href="arsip-artikel.html">Artikel</a></li>
+                <li><a href="history.html">Histori</a></li>
+            </ul>
+            <div class="nav-actions">
+                <button class="btn-search-icon" onclick="openSearchModal()" title="Cari Game">🔍</button>
+                <a href="keranjang.html" class="btn-cart">🛒 <span class="cart-badge">1</span></a>
+                <a href="#" class="btn btn-outline">Masuk</a>
+            </div>
+        </div>
+    </header>
+
+    <main class="container search-page-layout">
+        
+        <aside class="search-sidebar">
+            <div class="filter-group">
+                <h3>Kata Kunci</h3>
+                <input type="text" id="sidebarSearchInput" class="sidebar-input" placeholder="Ketik nama game..." oninput="executeAdvancedSearch()">
+            </div>
+
+            <div class="filter-group">
+                <h3>Kategori</h3>
+                <label class="filter-label">
+                    <input type="radio" name="catFilter" value="all" checked onclick="executeAdvancedSearch()"> Semua Kategori
+                </label>
+                <label class="filter-label">
+                    <input type="radio" name="catFilter" value="mobile" onclick="executeAdvancedSearch()"> Game Mobile
+                </label>
+                <label class="filter-label">
+                    <input type="radio" name="catFilter" value="pc" onclick="executeAdvancedSearch()"> Game PC
+                </label>
+                <label class="filter-label">
+                    <input type="radio" name="catFilter" value="voucher" onclick="executeAdvancedSearch()"> Voucher Digital
+                </label>
+            </div>
+
+            <div class="filter-group">
+                <h3>Urutan Abjad</h3>
+                <select id="sidebarAlphaFilter" class="sidebar-input" style="cursor: pointer;" onchange="executeAdvancedSearch()">
+                    <option value="all">Semua Abjad (A - Z)</option>
+                    <option value="E">Berawalan huruf E</option>
+                    <option value="F">Berawalan huruf F</option>
+                    <option value="G">Berawalan huruf G</option>
+                    <option value="H">Berawalan huruf H</option>
+                    <option value="M">Berawalan huruf M</option>
+                    <option value="P">Berawalan huruf P</option>
+                    <option value="R">Berawalan huruf R</option>
+                    <option value="S">Berawalan huruf S</option>
+                    <option value="V">Berawalan huruf V</option>
+                </select>
+            </div>
+        </aside>
+
+        <section class="search-results-content">
+            <div class="results-header">
+                <h2>Hasil Pencarian</h2>
+                <span id="matchCount">Menampilkan 0 game</span>
+            </div>
+
+            <div class="results-grid" id="resultsGrid">
+                </div>
+        </section>
+
+    </main>
+
+    <footer>
+        <div class="container footer-content">
+            <a href="index.html" class="logo">Play<span>Pass</span></a>
+            <p class="footer-text">Top up game cepat, aman, dan tanpa ribet. Layanan pelanggan 24/7.</p>
+            <p class="footer-text">© 2026 All Rights Reserved | Made by PLAYPASS</p>
+        </div>
+    </footer>
+
+    <div id="searchModal" class="search-modal">
+        <div class="search-modal-content">
+            <div class="search-modal-header">
+                <span style="font-size: 1.2rem; color: var(--text-muted);">🔍</span>
+                <input type="text" id="searchInput" placeholder="Cari game..." onkeyup="liveSearch()">
+                <button class="close-btn" onclick="closeSearchModal()">✖</button>
+            </div>
+            <div class="search-results" id="searchResults"></div>
+        </div>
+    </div>
+
+    <script>
+        const allGames = [
+            { id: "mlbb", name: "Mobile Legends: Bang Bang", pub: "Moonton", img: "assets/images/mlbb.png", cat: "mobile", link: "detail-produk.html" },
+            { id: "ff", name: "Free Fire", pub: "Garena", img: "assets/images/ff.png", cat: "mobile", link: "#" },
+            { id: "pubg", name: "PUBG Mobile", pub: "Tencent", img: "assets/images/pubg.png", cat: "mobile", link: "detail-produk.html" },
+            { id: "gi", name: "Genshin Impact", pub: "HoYoverse", img: "assets/images/GI.png", cat: "mobile", link: "#" },
+            { id: "valo", name: "Valorant", pub: "Riot Games", img: "assets/images/valo.png", cat: "pc", link: "#" },
+            { id: "hok", name: "Honor Of King", pub: "Level Infinite", img: "assets/images/hok.png", cat: "mobile", link: "#" },
+            { id: "efb", name: "eFootball", pub: "Konami", img: "assets/images/efb.png", cat: "mobile", link: "#" },
+            { id: "roblox", name: "Roblox", pub: "Roblox Corp", img: "assets/images/roblox.png", cat: "pc", link: "#" },
+            { id: "gopay", name: "Saldo GoPay", pub: "Gojek", img: "assets/images/gopay.png", cat: "voucher", link: "#" },
+            { id: "dana", name: "Saldo DANA", pub: "Dana", img: "assets/images/dana.png", cat: "voucher", link: "#" },
+            { id: "google", name: "Google Wallet", pub: "Google", img: "assets/images/GW.jpg", cat: "voucher", link: "#" },
+            { id: "steam", name: "Steam Wallet", pub: "Valve", img: "assets/images/steam.jpeg", cat: "voucher", link: "#" }
+        ];
+
+        window.addEventListener('DOMContentLoaded', () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const queryParam = urlParams.get('q');
+            
+            if (queryParam) {
+                document.getElementById('sidebarSearchInput').value = queryParam;
+            }
+            executeAdvancedSearch();
+        });
+
+        function executeAdvancedSearch() {
+            const txtKeyword = document.getElementById('sidebarSearchInput').value.toLowerCase();
+            const selectedCat = document.querySelector('input[name="catFilter"]:checked').value;
+            const selectedAlpha = document.getElementById('sidebarAlphaFilter').value;
+            
+            const gridContainer = document.getElementById('resultsGrid');
+            gridContainer.innerHTML = '';
+
+            const filteredGames = allGames.filter(game => {
+                const matchKeyword = game.name.toLowerCase().includes(txtKeyword) || game.pub.toLowerCase().includes(txtKeyword);
+                const matchCategory = (selectedCat === 'all') || (game.cat === selectedCat);
+                const matchAlphabet = (selectedAlpha === 'all') || (game.name.toUpperCase().startsWith(selectedAlpha));
+                
+                return matchKeyword && matchCategory && matchAlphabet;
+            });
+
+            document.getElementById('matchCount').innerText = `Menampilkan ${filteredGames.length} game`;
+
+            if (filteredGames.length === 0) {
+                gridContainer.innerHTML = `
+                    <div class="empty-state">
+                        <span style="font-size: 3rem;">🔍</span>
+                        <h3 style="margin: 15px 0 10px; color: var(--text-main);">Game Tidak Ditemukan</h3>
+                        <p>Coba gunakan kata kunci lain atau ubah pengaturan filter di sebelah kiri Anda.</p>
+                    </div>`;
+                return;
+            }
+
+            filteredGames.forEach(game => {
+                const card = document.createElement('a');
+                card.href = game.link;
+                card.className = 'game-card';
+                card.innerHTML = `
+                    <div class="game-img-container">
+                        <img src="${game.img}" alt="${game.name}" onerror="this.src='https://via.placeholder.com/340x240?text=Game'">
+                    </div>
+                    <h3>${game.name}</h3>
+                    <div class="publisher">${game.pub}</div>
+                `;
+                gridContainer.appendChild(card);
+            });
+        }
+        const searchModal = document.getElementById('searchModal');
+        const searchInput = document.getElementById('searchInput');
+        const searchResults = document.getElementById('searchResults');
+        function openSearchModal() { searchModal.style.display = 'flex'; searchInput.focus(); }
+        function closeSearchModal() { searchModal.style.display = 'none'; }
+        function liveSearch() {
+            const query = searchInput.value.toLowerCase(); searchResults.innerHTML = '';
+            if (query.trim() === '') return;
+            const filtered = allGames.filter(g => g.name.toLowerCase().includes(query));
+            filtered.forEach(game => {
+                const item = document.createElement('a'); item.href = game.link; item.className = 'result-item';
+                item.innerHTML = `<img src="${game.img}"><div class="result-info"><h4>${game.name}</h4><p>${game.pub}</p></div>`;
+                searchResults.appendChild(item);
+            });
+        }
+
+        function goToSearchPage() {
+            const query = document.getElementById('searchInput').value;
+            if(query.trim() !== '') {
+                window.location.href = 'search.html?q=' + encodeURIComponent(query);
+            } else {
+                window.location.href = 'search.html';
+            }
+        }
+
+    </script>
+</body>
+</html>

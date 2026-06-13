@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Histori Transaksi | PlayPass</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .history-wrapper { width: 100%; max-width: 900px; margin: 0 auto; box-sizing: border-box; }
+        .history-header { padding: 40px 0 20px; }
+        .history-header h1 { font-size: 2.2rem; margin-bottom: 10px; }
+        
+        .filter-tabs { display: flex; gap: 15px; margin-bottom: 30px; border-bottom: 1px solid #2A3241; padding-bottom: 10px; flex-wrap: wrap; }
+        .tab-btn { background: none; border: none; color: var(--text-muted); font-size: 1rem; font-weight: 600; cursor: pointer; padding: 10px 15px; position: relative; transition: 0.3s; white-space: nowrap; }
+        .tab-btn.active { color: var(--accent); }
+        .tab-btn.active::after { content: ''; position: absolute; bottom: -11px; left: 0; width: 100%; height: 3px; background-color: var(--accent); border-radius: 3px 3px 0 0; }
+        
+        .transaction-list { display: flex; flex-direction: column; gap: 15px; padding-bottom: 60px; }
+        .transaction-card { width: 100%; box-sizing: border-box; background-color: var(--bg-card); border: 1px solid #2A3241; border-radius: 12px; padding: 25px; display: flex; justify-content: space-between; align-items: center; transition: 0.3s; }
+        .transaction-card:hover { border-color: var(--accent); transform: translateX(5px); }
+        
+        .tx-info { flex: 1; display: flex; gap: 20px; align-items: center; }
+        .tx-icon { width: 65px; height: 65px; border-radius: 12px; object-fit: cover; }
+        .tx-details h3 { font-size: 1.2rem; margin-bottom: 5px; color: var(--text-main); }
+        .tx-details p { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 3px; }
+        .tx-id { font-family: monospace; color: var(--accent); font-weight: bold; }
+        .tx-status-price { min-width: 210px; text-align: right; display: flex; flex-direction: column; align-items: flex-end; gap: 10px; }
+
+        .badge { padding: 6px 14px; border-radius: 20px; font-size: 0.85rem; font-weight: bold; display: inline-block; }
+        .badge-success { background-color: rgba(16, 185, 129, 0.1); color: #10B981; }
+        .badge-pending { background-color: rgba(245, 158, 11, 0.1); color: #F59E0B; }
+        
+        .btn-action { padding: 8px 16px; border-radius: 8px; font-size: 0.9rem; font-weight: 600; cursor: pointer; transition: 0.3s; border: none; display: inline-flex; align-items: center; gap: 5px; }
+        .btn-pay { background-color: var(--accent); color: white; }
+        .btn-pay:hover { opacity: 0.9; }
+        .btn-download { background-color: transparent; border: 1px solid var(--accent); color: var(--accent); }
+        .btn-download:hover { background-color: var(--accent); color: white; }
+
+        @media (max-width: 768px) {
+            .transaction-card { flex-direction: column; align-items: flex-start; gap: 15px; }
+            .tx-status-price { text-align: left; align-items: flex-start; width: 100%; flex-direction: row; justify-content: space-between; }
+            .tx-price-badge { align-items: flex-start; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="container navbar">
+            <a href="index.html" class="logo">Play<span>Pass</span></a>
+            <ul class="nav-links">
+                <li><a href="index.html">Beranda</a></li>
+                <li><a href="katalog.html">Katalog</a></li>
+                <li><a href="arsip-artikel.html">Artikel</a></li>
+                <li><a href="history.html" style="color: var(--text-main);">Histori</a></li>
+            </ul>
+            <div class="nav-actions">
+                <button class="btn-search-icon" onclick="openSearchModal()" title="Cari Game">🔍</button>
+                <a href="keranjang.html" class="btn-cart">🛒 <span class="cart-badge">1</span></a>
+                <a href="login.html" class="btn btn-outline">Masuk</a>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        <div class="history-wrapper">
+            <section class="history-header">
+                <h1>Histori Transaksi</h1>
+                <p style="color: var(--text-muted);">Pantau status top up dan riwayat belanjamu di sini.</p>
+            </section>
+
+            <div class="filter-tabs">
+                <button class="tab-btn active" data-status="all">Semua Transaksi</button>
+                <button class="tab-btn" data-status="success">Berhasil</button>
+                <button class="tab-btn" data-status="pending">Menunggu Pembayaran</button>
+            </div>
+
+            <div class="transaction-list">
+                
+                <div class="transaction-card" data-status="pending">
+                    <div class="tx-info">
+                        <img src="assets/images/mlbb2.png" alt="Mobile Legends" class="tx-icon">
+                        <div class="tx-details">
+                            <span class="tx-id">#PP-987654321</span>
+                            <h3>Mobile Legends: Bang Bang</h3>
+                            <p>86 Diamonds • ID: 12345678 (1234)</p>
+                            <p>7 Juni 2026, 14:30 WIB</p>
+                        </div>
+                    </div>
+                    <div class="tx-status-price">
+                        <div class="tx-price-badge">
+                            <div class="tx-price">Rp 24.000</div>
+                            <div class="badge badge-pending">Menunggu Pembayaran</div>
+                        </div>
+                        <button class="btn-action btn-pay" onclick="window.location.href='pembayaran.html'">Bayar Sekarang</button>
+                    </div>
+                </div>
+
+                <div class="transaction-card" data-status="success">
+                    <div class="tx-info">
+                        <img src="assets/images/valo.png" alt="Valorant" class="tx-icon">
+                        <div class="tx-details">
+                            <span class="tx-id">#PP-112233445</span>
+                            <h3>Valorant</h3>
+                            <p>1125 VP • Riot ID: PlayerOne#123</p>
+                            <p>5 Juni 2026, 09:15 WIB</p>
+                        </div>
+                    </div>
+                    <div class="tx-status-price">
+                        <div class="tx-price-badge">
+                            <div class="tx-price">Rp 150.000</div>
+                            <div class="badge badge-success">Berhasil</div>
+                        </div>
+                        <button class="btn-action btn-download" onclick="window.location.href='nota.html'">📄 Unduh Nota</button>
+                    </div>
+                </div>
+
+                <div class="transaction-card" data-status="success">
+                    <div class="tx-info">
+                        <img src="assets/images/pubg.png" alt="PUBG Mobile" class="tx-icon">
+                        <div class="tx-details">
+                            <span class="tx-id">#PP-556677889</span>
+                            <h3>PUBG Mobile</h3>
+                            <p>325 UC • ID: 987654321</p>
+                            <p>1 Juni 2026, 19:45 WIB</p>
+                        </div>
+                    </div>
+                    <div class="tx-status-price">
+                        <div class="tx-price-badge">
+                            <div class="tx-price">Rp 60.000</div>
+                            <div class="badge badge-success">Berhasil</div>
+                        </div>
+                        <button class="btn-action btn-download" onclick="window.location.href='nota.html'">📄 Unduh Nota</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </main>
+
+    <div id="searchModal" class="search-modal">
+        <div class="search-modal-content">
+            <div class="search-modal-header">
+                <span style="font-size: 1.2rem; color: var(--text-muted);">🔍</span>
+                <input type="text" id="searchInput" placeholder="Cari game (misal: Mobile Legends)..." onkeyup="liveSearch()">
+                
+                <button onclick="goToSearchPage()" style="background-color: #b937f5; color: white; border: none; padding: 8px 20px; border-radius: 6px; font-weight: bold; cursor: pointer; margin-right: 10px; transition: 0.3s;">
+                    Cari
+                </button>
+                
+                <button class="close-btn" onclick="closeSearchModal()">✖</button>
+            </div>
+            <div class="search-results" id="searchResults">
+                <div style="padding: 20px; text-align: center; color: var(--text-muted);">Ketik nama game untuk mencari...</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const tabBtns = document.querySelectorAll('.tab-btn');
+        const txCards = document.querySelectorAll('.transaction-card');
+
+        tabBtns.forEach(btn => {
+            btn.addEventListener('click', function() {
+                tabBtns.forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+
+                const targetStatus = this.getAttribute('data-status');
+                txCards.forEach(card => {
+                    if (targetStatus === 'all' || card.getAttribute('data-status') === targetStatus) {
+                        card.style.display = 'flex';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+            });
+        });
+
+        const searchModal = document.getElementById('searchModal');
+        const searchInput = document.getElementById('searchInput');
+        const searchResults = document.getElementById('searchResults');
+
+        const dummyGames = [
+            { name: "Mobile Legends: Bang Bang", pub: "Moonton", img: "assets/images/mlbb2.png", link: "detail-produk.html" },
+            { name: "Valorant", pub: "Riot Games", img: "assets/images/valo.png", link: "detail-produk.html" },
+            { name: "PUBG Mobile", pub: "Tencent", img: "assets/images/pubg.png", link: "detail-produk.html" }
+        ];
+
+        function openSearchModal() { searchModal.style.display = 'flex'; searchInput.focus(); }
+        function closeSearchModal() { searchModal.style.display = 'none'; searchInput.value = ''; searchResults.innerHTML = '<div style="padding: 20px; text-align: center; color: var(--text-muted);">Ketik nama game untuk mencari...</div>'; }
+
+        function goToSearchPage() {
+            const query = document.getElementById('searchInput').value;
+            if(query.trim() !== '') {
+                window.location.href = 'search.html?q=' + encodeURIComponent(query);
+            } else {
+                window.location.href = 'search.html';
+            }
+        }
+
+        function liveSearch() {
+            const query = searchInput.value.toLowerCase();
+            searchResults.innerHTML = '';
+            if (query.trim() === '') { searchResults.innerHTML = '<div style="padding: 20px; text-align: center; color: var(--text-muted);">Ketik nama game untuk mencari...</div>'; return; }
+            const filtered = dummyGames.filter(game => game.name.toLowerCase().includes(query));
+            if (filtered.length === 0) { searchResults.innerHTML = '<div style="padding: 20px; text-align: center; color: var(--text-muted);">Game tidak ditemukan.</div>'; return; }
+            filtered.forEach(game => {
+                const item = document.createElement('a'); item.href = game.link; item.className = 'result-item';
+                item.innerHTML = `<img src="${game.img}" alt="${game.name}"><div class="result-info"><h4>${game.name}</h4><p>${game.pub}</p></div>`;
+                searchResults.appendChild(item);
+            });
+        }
+    </script>
+</body>
+</html>

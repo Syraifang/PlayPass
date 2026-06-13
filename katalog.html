@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Katalog Game | PlayPass</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .catalog-header { padding: 40px 0 20px; text-align: center; }
+        .catalog-header h1 { font-size: 2.5rem; margin-bottom: 15px; }
+        
+        .filter-container { display: flex; justify-content: center; gap: 15px; margin-bottom: 40px; flex-wrap: wrap; }
+        .filter-btn { padding: 8px 16px; background-color: var(--bg-card); color: var(--text-muted); border: 1px solid #2A3241; border-radius: 20px; cursor: pointer; transition: 0.3s; font-weight: 500; }
+        .filter-btn:hover, .filter-btn.active { background-color: var(--accent); color: white; border-color: var(--accent); }
+        
+        .game-grid { display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; padding-bottom: 20px; }
+        .game-card { background-color: var(--bg-card); padding: 20px; border-radius: 12px; width: 210px; text-align: center; border: 1px solid #2A3241; transition: 0.3s; text-decoration: none; display: block; color: var(--text-main); }
+        .game-card:hover { transform: translateY(-5px); border-color: var(--accent); box-shadow: 0 10px 20px rgba(0,0,0,0.2); }
+        .game-img-container { width: 100%; height: 120px; border-radius: 12px; overflow: hidden; margin-bottom: 15px; background-color: #F8FAFC; display: flex; align-items: center; justify-content: center; }
+        .game-img-container img { width: 100%; height: 100%; object-fit: contain; transition: transform 0.3s ease; display: block; }
+        .game-card:hover .game-img-container img { transform: scale(1.1); }
+        .publisher { font-size: 0.85rem; color: var(--text-muted); margin-top: 5px; }
+
+        .pagination-container { display: flex; justify-content: center; gap: 10px; padding-bottom: 60px; margin-top: 20px; }
+        .page-btn { padding: 10px 16px; background-color: var(--bg-card); color: var(--text-muted); border: 1px solid #2A3241; border-radius: 8px; cursor: pointer; transition: 0.3s; font-weight: bold; font-size: 1rem; }
+        .page-btn:hover, .page-btn.active { background-color: var(--accent); color: white; border-color: var(--accent); }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="container navbar">
+            <a href="index.html" class="logo">Play<span>Pass</span></a>
+            <ul class="nav-links">
+                <li><a href="index.html">Beranda</a></li>
+                <li><a href="katalog.html" style="color: var(--text-main);">Katalog</a></li>
+                <li><a href="arsip-artikel.html">Artikel</a></li>
+                <li><a href="history.html">Histori</a></li>
+            </ul>
+            <div class="nav-actions">
+                <button class="btn-search-icon" onclick="openSearchModal()" title="Cari Game">🔍</button>
+                <a href="keranjang.html" class="btn-cart">🛒 <span class="cart-badge">1</span></a>
+                <a href="#" class="btn btn-outline">Masuk</a>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        <section class="catalog-header">
+            <h1>Pilih Game Favoritmu</h1>
+            <p style="color: var(--text-muted);">Top up cepat, aman, dan langsung masuk ke akunmu.</p>
+        </section>
+
+        <div class="filter-container">
+            <button class="filter-btn active" data-filter="all">Semua</button>
+            <button class="filter-btn" data-filter="mobile">Game Mobile</button>
+            <button class="filter-btn" data-filter="pc">Game PC</button>
+            <button class="filter-btn" data-filter="voucher">Voucher Digital</button>
+        </div>
+
+        <div class="game-grid" id="katalog-grid"></div>
+
+        <div class="pagination-container" id="pagination-container"></div>
+    </main>
+
+    <footer>
+        <div class="container footer-content">
+            <a href="index.html" class="logo">Play<span>Pass</span></a>
+            <p class="footer-text">Top up game cepat, aman, dan tanpa ribet. Layanan pelanggan 24/7.</p>
+            <p class="footer-text">© 2026 All Rights Reserved | Made by PLAYPASS</p>
+        </div>
+    </footer>
+
+    <div id="searchModal" class="search-modal">
+        <div class="search-modal-content">
+            <div class="search-modal-header">
+                <span style="font-size: 1.2rem; color: var(--text-muted);">🔍</span>
+                <input type="text" id="searchInput" placeholder="Cari game (misal: Mobile Legends)..." onkeyup="liveSearch()">
+                <button onclick="goToSearchPage()" style="background-color: #b937f5; color: white; border: none; padding: 8px 20px; border-radius: 6px; font-weight: bold; cursor: pointer; margin-right: 10px; transition: 0.3s;">
+                    Cari
+                </button>
+                <button class="close-btn" onclick="closeSearchModal()">✖</button>
+            </div>
+            <div class="search-results" id="searchResults">
+                <div style="padding: 20px; text-align: center; color: var(--text-muted);">Ketik nama game untuk mencari...</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const catalogData = [
+            { name: "Mobile Legends", pub: "Moonton", img: "assets/images/mlbb.png", cat: "mobile", link: "detail-produk.html" },
+            { name: "Honor Of King", pub: "Level Infinite", img: "assets/images/hok.png", cat: "mobile", link: "#" },
+            { name: "PUBG Mobile", pub: "Tencent", img: "assets/images/pubg.png", cat: "mobile", link: "detail-produk.html" },
+            { name: "Genshin Impact", pub: "HoYoverse", img: "assets/images/GI.png", cat: "mobile", link: "#" },
+            { name: "Free Fire", pub: "Garena", img: "assets/images/ff.png", cat: "mobile", link: "#" },
+            { name: "eFootball", pub: "Konami", img: "assets/images/efb.png", cat: "mobile", link: "#" },
+            { name: "Clash Royale", pub: "Supercell", img: "assets/images/cr.png", cat: "mobile", link: "#" },
+            { name: "Valorant", pub: "Riot Games", img: "assets/images/valo.png", cat: "pc", link: "#" },
+            { name: "Roblox", pub: "Roblox Corp", img: "assets/images/roblox.png", cat: "pc", link: "#" },
+            { name: "PUBG PC", pub: "KRAFTON, Inc.", img: "assets/images/pubgp.png", cat: "pc", link: "#" },
+            { name: "Where Winds Meet", pub: "NetEase Games", img: "assets/images/wwm.png", cat: "pc", link: "#" },
+            { name: "Saldo GoPay", pub: "Gojek", img: "assets/images/gopay.png", cat: "voucher", link: "#" },
+            { name: "Saldo DANA", pub: "Dana", img: "assets/images/dana.png", cat: "voucher", link: "#" },
+            { name: "Google Wallet", pub: "Google", img: "assets/images/GW.jpg", cat: "voucher", link: "#" },
+            { name: "Steam Wallet", pub: "Steam", img: "assets/images/steam.jpeg", cat: "voucher", link: "#" }
+        ];
+
+        const gridContainer = document.getElementById('katalog-grid');
+        const paginationContainer = document.getElementById('pagination-container');
+        const filterBtns = document.querySelectorAll('.filter-btn');
+
+        let currentCategory = 'all'; 
+        let currentPage = 1;         
+        const itemsPerPage = 10;     
+
+        function renderCatalog() {
+            const filteredData = catalogData.filter(game => {
+                return currentCategory === 'all' || game.cat === currentCategory;
+            });
+
+            const totalPages = Math.ceil(filteredData.length / itemsPerPage);
+            if (currentPage > totalPages) currentPage = totalPages || 1; 
+
+            const startIndex = (currentPage - 1) * itemsPerPage;
+            const endIndex = startIndex + itemsPerPage;
+            const dataToShow = filteredData.slice(startIndex, endIndex);
+
+            gridContainer.innerHTML = '';
+
+            dataToShow.forEach(game => {
+                const card = document.createElement('a');
+                card.href = game.link;
+                card.className = 'game-card';
+                card.innerHTML = `
+                    <div class="game-img-container">
+                        <img src="${game.img}" alt="${game.name}" onerror="this.src='https://via.placeholder.com/340x240?text=Game'">
+                    </div>
+                    <h3>${game.name}</h3>
+                    <div class="publisher">${game.pub}</div>
+                `;
+                gridContainer.appendChild(card);
+            });
+
+            renderPaginationButtons(totalPages);
+        }
+
+        function renderPaginationButtons(totalPages) {
+            paginationContainer.innerHTML = ''; 
+            if (totalPages <= 1) return;
+            for (let i = 1; i <= totalPages; i++) {
+                const btn = document.createElement('button');
+                btn.className = `page-btn ${i === currentPage ? 'active' : ''}`;
+                btn.innerText = i;
+                btn.addEventListener('click', () => {
+                    currentPage = i;
+                    renderCatalog();
+                    document.querySelector('.filter-container').scrollIntoView({ behavior: 'smooth' });
+                });
+                paginationContainer.appendChild(btn);
+            }
+        }
+
+        filterBtns.forEach(btn => {
+            btn.addEventListener('click', function() {
+                filterBtns.forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                currentCategory = this.getAttribute('data-filter');
+                currentPage = 1; 
+                renderCatalog();
+            });
+        });
+
+        renderCatalog();
+
+        const searchModal = document.getElementById('searchModal');
+        const searchInput = document.getElementById('searchInput');
+        const searchResults = document.getElementById('searchResults');
+
+        function openSearchModal() { searchModal.style.display = 'flex'; searchInput.focus(); }
+        function closeSearchModal() { searchModal.style.display = 'none'; searchInput.value = ''; searchResults.innerHTML = '<div style="padding: 20px; text-align: center; color: var(--text-muted);">Ketik nama game untuk mencari...</div>'; }
+
+        function liveSearch() {
+            const query = searchInput.value.toLowerCase();
+            searchResults.innerHTML = '';
+            if (query.trim() === '') { searchResults.innerHTML = '<div style="padding: 20px; text-align: center; color: var(--text-muted);">Ketik nama game untuk mencari...</div>'; return; }
+            const filtered = catalogData.filter(game => game.name.toLowerCase().includes(query)); // Pakai catalogData agar tersinkronisasi
+            if (filtered.length === 0) { searchResults.innerHTML = '<div style="padding: 20px; text-align: center; color: var(--text-muted);">Game tidak ditemukan.</div>'; return; }
+            filtered.forEach(game => {
+                const item = document.createElement('a'); item.href = game.link; item.className = 'result-item';
+                item.innerHTML = `<img src="${game.img}" alt="${game.name}" onerror="this.src='https://via.placeholder.com/60'"><div class="result-info"><h4>${game.name}</h4><p>${game.pub}</p></div>`;
+                searchResults.appendChild(item);
+            });
+        }
+
+        function goToSearchPage() {
+            const query = document.getElementById('searchInput').value;
+            if(query.trim() !== '') {
+                window.location.href = 'search.html?q=' + encodeURIComponent(query);
+            } else {
+                window.location.href = 'search.html';
+            }
+        }
+    </script>
+</body>
+</html>

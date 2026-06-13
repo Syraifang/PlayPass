@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Artikel & Tips | PlayPass</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .article-header { padding: 40px 0 20px; text-align: center; }
+        .article-header h1 { font-size: 2.5rem; margin-bottom: 15px; }
+        
+        .filter-container { display: flex; justify-content: center; gap: 15px; margin-bottom: 40px; flex-wrap: wrap; }
+        .filter-btn { padding: 8px 16px; background-color: var(--bg-card); color: var(--text-muted); border: 1px solid #2A3241; border-radius: 20px; cursor: pointer; transition: 0.3s; font-weight: 500; }
+        .filter-btn:hover, .filter-btn.active { background-color: var(--accent); color: white; border-color: var(--accent); }
+
+        .article-grid { 
+            display: grid; 
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px; 
+            padding-bottom: 20px; 
+        }
+        
+        .article-card { background-color: var(--bg-card); border: 1px solid #2A3241; border-radius: 12px; overflow: hidden; transition: 0.3s; text-decoration: none; display: flex; flex-direction: column; cursor: pointer; }
+        .article-card:hover { transform: translateY(-5px); border-color: var(--accent); box-shadow: 0 10px 20px rgba(0,0,0,0.2); }
+        
+        .article-img { width: 100%; height: 200px; object-fit: cover; border-bottom: 1px solid #2A3241; }
+        
+        .article-content { padding: 20px; display: flex; flex-direction: column; flex: 1; }
+        .article-badge { background-color: rgba(124, 58, 237, 0.15); color: var(--accent); padding: 5px 12px; border-radius: 6px; font-size: 0.8rem; font-weight: bold; align-self: flex-start; margin-bottom: 15px; border: 1px solid rgba(124, 58, 237, 0.3); }
+        
+        .badge-tips { background-color: rgba(16, 185, 129, 0.15); color: #10B981; border-color: rgba(16, 185, 129, 0.3); }
+        .badge-promo { background-color: rgba(245, 158, 11, 0.15); color: #F59E0B; border-color: rgba(245, 158, 11, 0.3); }
+
+        .article-title { color: var(--text-main); font-size: 1.2rem; margin-bottom: 10px; line-height: 1.4; }
+        .article-excerpt { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 20px; line-height: 1.5; }
+        
+        .article-meta { margin-top: auto; border-top: 1px solid #2A3241; padding-top: 15px; display: flex; justify-content: space-between; color: var(--text-muted); font-size: 0.85rem; }
+
+        .pagination-container { display: flex; justify-content: center; gap: 10px; padding-bottom: 60px; margin-top: 20px; }
+        .page-btn { padding: 10px 16px; background-color: var(--bg-card); color: var(--text-muted); border: 1px solid #2A3241; border-radius: 8px; cursor: pointer; transition: 0.3s; font-weight: bold; font-size: 1rem; }
+        .page-btn:hover, .page-btn.active { background-color: var(--accent); color: white; border-color: var(--accent); }
+
+        @media (max-width: 992px) { .article-grid { grid-template-columns: repeat(2, 1fr); } }
+        @media (max-width: 768px) { .article-grid { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="container navbar">
+            <a href="index.html" class="logo">Play<span>Pass</span></a>
+            <ul class="nav-links">
+                <li><a href="index.html">Beranda</a></li>
+                <li><a href="katalog.html">Katalog</a></li>
+                <li><a href="arsip-artikel.html" style="color: var(--text-main);">Artikel</a></li>
+                <li><a href="history.html">Histori</a></li>
+            </ul>
+            <div class="nav-actions">
+                <button class="btn-search-icon" onclick="openSearchModal()" title="Cari Game">🔍</button>
+                <a href="keranjang.html" class="btn-cart">🛒 <span class="cart-badge">1</span></a>
+                <a href="dashboard.html" class="btn btn-outline">Masuk</a>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        <section class="article-header">
+            <h1>Info, Tips & Promo</h1>
+            <p style="color: var(--text-muted);">Temukan kabar terbaru seputar game favoritmu di sini.</p>
+        </section>
+
+        <div class="filter-container">
+            <button class="filter-btn active" data-filter="all">Semua Artikel</button>
+            <button class="filter-btn" data-filter="berita">Berita Terbaru</button>
+            <button class="filter-btn" data-filter="tips">Tips & Trik</button>
+            <button class="filter-btn" data-filter="promo">Promo</button>
+        </div>
+
+        <div class="article-grid" id="article-grid">
+            
+            <a href="detail-artikel.html" class="article-card" data-category="berita">
+                <img src="https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&w=600&q=80" alt="Berita MLBB" class="article-img">
+                <div class="article-content">
+                    <span class="article-badge">Berita Terbaru</span>
+                    <h2 class="article-title">Update Patch 1.8.44 Mobile Legends: Hero Ini Kena Nerf Parah!</h2>
+                    <p class="article-excerpt">Moonton baru saja merilis patch terbaru yang mengubah META secara drastis. Simak hero apa saja yang turun kasta...</p>
+                    <div class="article-meta"><span>Oleh Admin</span><span>8 Juni 2026</span></div>
+                </div>
+            </a>
+
+            <a href="detail-artikel.html" class="article-card" data-category="tips">
+                <img src="https://images.unsplash.com/photo-1538481199705-c710c4e965fc?auto=format&fit=crop&w=600&q=80" alt="Tips Valorant" class="article-img">
+                <div class="article-content">
+                    <span class="article-badge badge-tips">Tips & Trik</span>
+                    <h2 class="article-title">5 Settingan Crosshair Valorant Terbaik ala Pro Player VCT 2026</h2>
+                    <p class="article-excerpt">Ingin aim kamu setajam TenZ atau f0rsakeN? Cobain 5 kode crosshair rahasia ini agar headshot makin mudah...</p>
+                    <div class="article-meta"><span>Oleh Editor</span><span>5 Juni 2026</span></div>
+                </div>
+            </a>
+
+            <a href="detail-artikel.html" class="article-card" data-category="promo">
+                <img src="https://images.unsplash.com/photo-1605901309584-818e25960b8f?auto=format&fit=crop&w=600&q=80" alt="Promo PUBG" class="article-img">
+                <div class="article-content">
+                    <span class="article-badge badge-promo">Promo Spesial</span>
+                    <h2 class="article-title">Flash Sale Akhir Bulan! Top Up UC PUBG Mobile Cashback 50%</h2>
+                    <p class="article-excerpt">Jangan sampai ketinggalan event Flash Sale bulan ini. Dapatkan cashback saldo GoPay untuk setiap pembelian UC...</p>
+                    <div class="article-meta"><span>Oleh PlayPass</span><span>1 Juni 2026</span></div>
+                </div>
+            </a>
+
+            <a href="detail-artikel.html" class="article-card" data-category="berita">
+                <img src="assets/images/pengumuman.jpg" alt="Pengumuman" class="article-img">
+                <div class="article-content">
+                    <span class="article-badge">Berita Terbaru</span>
+                    <h2 class="article-title">⚠️ Pengumuman Maintenance</h2>
+                    <p class="article-excerpt">Halo Semua, Tanggal 21 Juli 2026 Pukul 6:00 WIB, Playpass akan melakukan maintenance selama kurang lebih 1-2 jam. terima kasih.</p>
+                    <div class="article-meta"><span>Oleh Admin</span><span>20 Juli 2026</span></div>
+                </div>
+            </a>
+
+            <a href="detail-artikel.html" class="article-card" data-category="tips">
+                <img src="https://images.unsplash.com/photo-1552820728-8b83bb6b773f?auto=format&fit=crop&w=600&q=80" alt="Free Fire" class="article-img">
+                <div class="article-content">
+                    <span class="article-badge badge-tips">Tips & Trik</span>
+                    <h2 class="article-title">Cara Mendapatkan Booyah Konsisten di Map Kalahari Free Fire</h2>
+                    <p class="article-excerpt">Map Kalahari punya medan yang unik. Berikut adalah rute rotasi dan senjata terbaik untuk mendominasi map ini...</p>
+                    <div class="article-meta"><span>Oleh Editor</span><span>25 Mei 2026</span></div>
+                </div>
+            </a>
+
+            <a href="detail-artikel.html" class="article-card" data-category="berita">
+                <img src="https://images.unsplash.com/photo-1614680376593-902f74cf0d41?auto=format&fit=crop&w=600&q=80" alt="Steam Promo" class="article-img">
+                <div class="article-content">
+                    <span class="article-badge">Berita Terbaru</span>
+                    <h2 class="article-title">Jadwal Lengkap Steam Summer Sale 2026 Bocor di Internet!</h2>
+                    <p class="article-excerpt">Siapkan dompetmu! Event diskon game PC terbesar tahunan akhirnya mendapat kepastian tanggal rilis...</p>
+                    <div class="article-meta"><span>Oleh Admin</span><span>20 Mei 2026</span></div>
+                </div>
+            </a>
+
+            <a href="detail-artikel.html" class="article-card" data-category="promo">
+                <img src="https://images.unsplash.com/photo-1585620385456-4759f9b5c7d9?auto=format&fit=crop&w=600&q=80" alt="Netflix Promo" class="article-img">
+                <div class="article-content">
+                    <span class="article-badge badge-promo">Promo Spesial</span>
+                    <h2 class="article-title">Beli Voucher Netflix Premium Gratis Langganan 1 Bulan Tambahan</h2>
+                    <p class="article-excerpt">Nikmati marathon series favoritmu akhir pekan ini. Beli voucher bulan ini, langsung dapat bonus ekstra...</p>
+                    <div class="article-meta"><span>Oleh PlayPass</span><span>18 Mei 2026</span></div>
+                </div>
+            </a>
+
+            <a href="detail-artikel.html" class="article-card" data-category="tips">
+                <img src="https://images.unsplash.com/photo-1607853202273-797f1c22a38e?auto=format&fit=crop&w=600&q=80" alt="PS Plus Tips" class="article-img">
+                <div class="article-content">
+                    <span class="article-badge badge-tips">Tips & Trik</span>
+                    <h2 class="article-title">Daftar Game Gratis PS Plus Bulan Ini yang Wajib Kamu Klaim</h2>
+                    <p class="article-excerpt">Jangan lewatkan judul-judul AAA gratis dari Sony bulan ini. Berikut review singkat mana yang layak dimainkan...</p>
+                    <div class="article-meta"><span>Oleh Editor</span><span>15 Mei 2026</span></div>
+                </div>
+            </a>
+
+        </div>
+
+        <div class="pagination-container" id="pagination-container"></div>
+    </main>
+
+    <footer>
+        <div class="container footer-content">
+            <a href="index.html" class="logo">Play<span>Pass</span></a>
+            <p class="footer-text">Top up game cepat, aman, dan tanpa ribet. Layanan pelanggan 24/7.</p>
+            <p class="footer-text">© 2026 All Rights Reserved | Made by PLAYPASS</p>
+        </div>
+    </footer>
+
+    <div id="searchModal" class="search-modal">
+        <div class="search-modal-content">
+            <div class="search-modal-header">
+                <span style="font-size: 1.2rem; color: var(--text-muted);">🔍</span>
+                <input type="text" id="searchInput" placeholder="Cari game (misal: Mobile Legends)..." onkeyup="liveSearch()">
+                <button onclick="goToSearchPage()" style="background-color: #b937f5; color: white; border: none; padding: 8px 20px; border-radius: 6px; font-weight: bold; cursor: pointer; margin-right: 10px; transition: 0.3s;">
+                    Cari
+                </button>
+                <button class="close-btn" onclick="closeSearchModal()">✖</button>
+            </div>
+            <div class="search-results" id="searchResults">
+                <div style="padding: 20px; text-align: center; color: var(--text-muted);">Ketik nama game untuk mencari...</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const filterBtns = document.querySelectorAll('.filter-btn');
+        const articleCards = Array.from(document.querySelectorAll('.article-card')); 
+        const paginationContainer = document.getElementById('pagination-container');
+
+        let currentCategory = 'all'; 
+        let currentPage = 1;         
+        const itemsPerPage = 6; 
+
+        function renderArticles() {
+            const filteredCards = articleCards.filter(card => {
+                const category = card.getAttribute('data-category');
+                return currentCategory === 'all' || category === currentCategory;
+            });
+
+            const totalPages = Math.ceil(filteredCards.length / itemsPerPage);
+            if (currentPage > totalPages) currentPage = totalPages || 1; 
+
+            const startIndex = (currentPage - 1) * itemsPerPage;
+            const endIndex = startIndex + itemsPerPage;
+
+            articleCards.forEach(card => card.style.display = 'none');
+
+            const cardsToShow = filteredCards.slice(startIndex, endIndex);
+            cardsToShow.forEach(card => card.style.display = 'flex');
+
+            renderPaginationButtons(totalPages);
+        }
+
+        function renderPaginationButtons(totalPages) {
+            paginationContainer.innerHTML = ''; 
+            if (totalPages <= 1) return;
+            for (let i = 1; i <= totalPages; i++) {
+                const btn = document.createElement('button');
+                btn.className = `page-btn ${i === currentPage ? 'active' : ''}`;
+                btn.innerText = i;
+                btn.addEventListener('click', () => {
+                    currentPage = i;
+                    renderArticles();
+                    document.querySelector('.filter-container').scrollIntoView({ behavior: 'smooth' });
+                });
+                paginationContainer.appendChild(btn);
+            }
+        }
+
+        filterBtns.forEach(btn => {
+            btn.addEventListener('click', function() {
+                filterBtns.forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                currentCategory = this.getAttribute('data-filter');
+                currentPage = 1; 
+                renderArticles();
+            });
+        });
+        renderArticles();
+
+        const searchModal = document.getElementById('searchModal');
+        const searchInput = document.getElementById('searchInput');
+        const searchResults = document.getElementById('searchResults');
+        const dummyGames = [
+            { name: "Mobile Legends: Bang Bang", pub: "Moonton", img: "assets/images/mlbb2.png", link: "detail-produk.html" },
+            { name: "Valorant", pub: "Riot Games", img: "assets/images/valo.png", link: "#" },
+            { name: "PUBG Mobile", pub: "Tencent", img: "assets/images/pubg.png", link: "detail-produk.html" }
+        ];
+        function openSearchModal() { searchModal.style.display = 'flex'; searchInput.focus(); }
+        function closeSearchModal() { searchModal.style.display = 'none'; searchInput.value = ''; searchResults.innerHTML = '<div style="padding: 20px; text-align: center; color: var(--text-muted);">Ketik nama game untuk mencari...</div>'; }
+        function liveSearch() {
+            const query = searchInput.value.toLowerCase(); searchResults.innerHTML = '';
+            if (query.trim() === '') { searchResults.innerHTML = '<div style="padding: 20px; text-align: center; color: var(--text-muted);">Ketik nama game untuk mencari...</div>'; return; }
+            const filtered = dummyGames.filter(game => game.name.toLowerCase().includes(query));
+            if (filtered.length === 0) { searchResults.innerHTML = '<div style="padding: 20px; text-align: center; color: var(--text-muted);">Game tidak ditemukan.</div>'; return; }
+            filtered.forEach(game => {
+                const item = document.createElement('a'); item.href = game.link; item.className = 'result-item';
+                item.innerHTML = `<img src="${game.img}" alt="${game.name}"><div class="result-info"><h4>${game.name}</h4><p>${game.pub}</p></div>`;
+                searchResults.appendChild(item);
+            });
+        }
+
+         function goToSearchPage() {
+            const query = document.getElementById('searchInput').value;
+            if(query.trim() !== '') {
+                window.location.href = 'search.html?q=' + encodeURIComponent(query);
+            } else {
+                window.location.href = 'search.html';
+            }
+        }
+    </script>
+</body>
+</html>

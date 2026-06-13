@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pembayaran | PlayPass</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .payment-container {
+            max-width: 600px;
+            margin: 50px auto;
+            background-color: var(--bg-card);
+            border: 1px solid #2A3241;
+            border-radius: 12px;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .payment-header h1 { font-size: 1.8rem; margin-bottom: 10px; }
+        .payment-header p { color: var(--text-muted); margin-bottom: 30px; }
+
+        .payment-details {
+            background-color: var(--bg-dark);
+            border: 1px solid #2A3241;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 30px;
+            text-align: left;
+        }
+
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            color: var(--text-muted);
+            border-bottom: 1px dashed #2A3241;
+            padding-bottom: 10px;
+        }
+
+        .detail-row:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+        .detail-value { color: var(--text-main); font-weight: bold; }
+        .total-pay { font-size: 1.5rem; color: var(--accent); }
+
+        .qris-box {
+            background-color: white;
+            width: 200px;
+            height: 200px;
+            margin: 0 auto 20px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: black;
+            font-weight: bold;
+        }
+
+        .btn-full { width: 100%; padding: 15px; font-size: 1.1rem; border: none; cursor: pointer; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="container navbar">
+            <a href="index.html" class="logo">Play<span>Pass</span></a>
+            <ul class="nav-links">
+                <li><a href="index.html">Beranda</a></li>
+                <li><a href="katalog.html">Katalog</a></li>
+                <li><a href="arsip-artikel.html">Artikel</a></li>
+                <li><a href="history.html">Histori</a></li>
+            </ul>
+            <div class="nav-actions">
+                <button class="btn-search-icon" onclick="openSearchModal()" title="Cari Game">🔍</button>
+                <a href="keranjang.html" class="btn-cart">🛒 <span class="cart-badge">1</span></a>
+                <a href="dashboard.html" class="btn btn-outline">Masuk</a>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        <div class="payment-container">
+            <div class="payment-header">
+                <h1>Selesaikan Pembayaran</h1>
+                <p>Pesanan akan diproses otomatis setelah pembayaran berhasil.</p>
+            </div>
+
+            <div class="payment-details">
+                <div class="detail-row">
+                    <span>Order ID:</span>
+                    <span class="detail-value">#PP-987654321</span>
+                </div>
+                <div class="detail-row">
+                    <span>Metode Pembayaran:</span>
+                    <span class="detail-value">GoPay (QRIS)</span>
+                </div>
+                <div class="detail-row">
+                    <span>Total Tagihan:</span>
+                    <span class="detail-value total-pay">Rp 24.000</span>
+                </div>
+            </div>
+
+            <div class="qris-box">
+                <img src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=Dummy+Pembayaran+PlayPass+Rp24.000" alt="QRIS Pembayaran">
+            </div>
+            <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 20px;">Scan QR Code di atas.</p>
+
+            <button class="btn btn-primary btn-full" onclick="konfirmasiBayar()">Saya Sudah Bayar</button>
+            <a href="keranjang.html" style="display: block; margin-top: 15px; color: var(--text-muted); text-decoration: none;">Batalkan Pesanan</a>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container footer-content">
+            <a href="index.html" class="logo">Play<span>Pass</span></a>
+            <p class="footer-text">Top up game cepat, aman, dan tanpa ribet. Layanan pelanggan 24/7.</p>
+            <p class="footer-text">© 2026 All Rights Reserved | Made by PLAYPASS</p>
+        </div>
+    </footer>
+
+    <div id="searchModal" class="search-modal">
+        <div class="search-modal-content">
+            <div class="search-modal-header">
+                <span style="font-size: 1.2rem; color: var(--text-muted);">🔍</span>
+                <input type="text" id="searchInput" placeholder="Cari game (misal: Mobile Legends)..." onkeyup="liveSearch()">
+                
+                <button onclick="goToSearchPage()" style="background-color: #b937f5; color: white; border: none; padding: 8px 20px; border-radius: 6px; font-weight: bold; cursor: pointer; margin-right: 10px; transition: 0.3s;">
+                    Cari
+                </button>
+                
+                <button class="close-btn" onclick="closeSearchModal()">✖</button>
+            </div>
+            <div class="search-results" id="searchResults">
+                <div style="padding: 20px; text-align: center; color: var(--text-muted);">Ketik nama game untuk mencari...</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function konfirmasiBayar() {
+            alert("Sistem sedang memverifikasi pembayaran Anda...");
+            window.location.href = "history.html"; 
+        }
+
+        const searchModal = document.getElementById('searchModal');
+        const searchInput = document.getElementById('searchInput');
+        const searchResults = document.getElementById('searchResults');
+        const dummyGames = [
+            { name: "Mobile Legends: Bang Bang", pub: "Moonton", img: "assets/images/mlbb2.png", link: "detail-produk.html" },
+            { name: "Valorant", pub: "Riot Games", img: "assets/images/valo.png", link: "#" },
+            { name: "PUBG Mobile", pub: "Tencent", img: "assets/images/pubg.png", link: "detail-produk.html" },
+            { name: "Genshin Impact", pub: "HoYoverse", img: "assets/images/GI.png", link: "#" },
+            { name: "Free Fire", pub: "Garena", img: "assets/images/ff.png", link: "#" },
+            { name: "Honor of Kings", pub: "Level Infinite", img: "assets/images/hok.png", link: "#" },
+            { name: "eFootball", pub: "Konami", img: "assets/images/efb.png", link: "#" }
+        ];
+
+        function openSearchModal() { searchModal.style.display = 'flex'; searchInput.focus(); }
+        function closeSearchModal() { searchModal.style.display = 'none'; searchInput.value = ''; searchResults.innerHTML = '<div style="padding: 20px; text-align: center; color: var(--text-muted);">Ketik nama game untuk mencari...</div>'; }
+
+        function liveSearch() {
+            const query = searchInput.value.toLowerCase();
+            searchResults.innerHTML = '';
+            if (query.trim() === '') { searchResults.innerHTML = '<div style="padding: 20px; text-align: center; color: var(--text-muted);">Ketik nama game untuk mencari...</div>'; return; }
+            const filtered = dummyGames.filter(game => game.name.toLowerCase().includes(query));
+            if (filtered.length === 0) { searchResults.innerHTML = '<div style="padding: 20px; text-align: center; color: var(--text-muted);">Game tidak ditemukan.</div>'; return; }
+            filtered.forEach(game => {
+                const item = document.createElement('a'); item.href = game.link; item.className = 'result-item';
+                item.innerHTML = `<img src="${game.img}" alt="${game.name}"><div class="result-info"><h4>${game.name}</h4><p>${game.pub}</p></div>`;
+                searchResults.appendChild(item);
+            });
+        }
+
+        function goToSearchPage() {
+            const query = document.getElementById('searchInput').value;
+            if(query.trim() !== '') {
+                window.location.href = 'search.html?q=' + encodeURIComponent(query);
+            } else {
+                window.location.href = 'search.html';
+            }
+        }
+    </script>
+</body>
+</html>

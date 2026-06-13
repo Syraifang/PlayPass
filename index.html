@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PlayPass | Top Up Cepat Anti Ribet</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .hero { padding: 60px 0 40px; text-align: center; }
+        .hero h1 { font-size: 3rem; margin-bottom: 20px; }
+        .hero h1 span { color: var(--accent); }
+        .hero p { color: var(--text-muted); font-size: 1.2rem; max-width: 600px; margin: 0 auto 30px; }
+        
+        .feature-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; max-width: 900px; margin: 0 auto 60px; }
+        .feature { background-color: var(--bg-card); padding: 25px 20px; border-radius: 12px; border: 1px solid #2A3241; transition: 0.3s; }
+        .feature:hover { border-color: var(--accent); transform: translateY(-5px); }
+        .feature h4 { color: var(--text-main); font-size: 1.2rem; margin-bottom: 10px; }
+        .feature p { color: var(--text-muted); font-size: 0.9rem; margin: 0; }
+
+        .section-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 30px; }
+        .section-header h2 { font-size: 1.8rem; color: var(--text-main); margin: 0; }
+        .section-header a { color: var(--accent); text-decoration: none; font-weight: bold; font-size: 0.95rem; transition: 0.2s; }
+        .section-header a:hover { color: var(--text-main); }
+
+        .game-grid { display: flex; gap: 15px; justify-content: center; flex-wrap: wrap; margin-bottom: 60px; }
+        .game-card { background-color: var(--bg-card); padding: 20px; border-radius: 12px; width: 210px; text-align: center; border: 1px solid #2A3241; transition: 0.3s; cursor: pointer; text-decoration: none; color: var(--text-main); display: block; }
+        .game-card:hover { transform: translateY(-5px); border-color: var(--accent); box-shadow: 0 10px 20px rgba(0,0,0,0.2); }
+        .game-img-container { width: 100%; height: 120px; border-radius: 12px; overflow: hidden; margin-bottom: 15px; background-color: #F8FAFC; display: flex; align-items: center; justify-content: center; }
+        .game-img-container img { width: 100%; height: 100%; object-fit: contain; transition: transform 0.3s ease; display: block; }
+        .game-card:hover .game-img-container img { transform: scale(1.1); }
+        .publisher { font-size: 0.85rem; color: var(--text-muted); margin-top: 5px; }
+
+        .article-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 25px; margin-bottom: 60px; }
+        .article-card { background-color: var(--bg-card); border: 1px solid #2A3241; border-radius: 12px; overflow: hidden; transition: 0.3s; text-decoration: none; display: flex; flex-direction: column; cursor: pointer; }
+        .article-card:hover { transform: translateY(-5px); border-color: var(--accent); }
+        .article-img { width: 100%; height: 180px; object-fit: cover; border-bottom: 1px solid #2A3241; }
+        .article-content { padding: 20px; display: flex; flex-direction: column; flex: 1; }
+        .article-badge { background-color: rgba(124, 58, 237, 0.15); color: var(--accent); padding: 5px 12px; border-radius: 6px; font-size: 0.8rem; font-weight: bold; align-self: flex-start; margin-bottom: 15px; border: 1px solid rgba(124, 58, 237, 0.3); }
+        .article-title { color: var(--text-main); font-size: 1.1rem; margin-bottom: 10px; line-height: 1.4; }
+        .article-excerpt { color: var(--text-muted); font-size: 0.85rem; margin-bottom: 20px; line-height: 1.5; }
+
+        .cta-banner { background: linear-gradient(135deg, rgba(124, 58, 237, 0.2), rgba(11, 15, 25, 1)); border: 1px solid var(--accent); border-radius: 16px; padding: 50px 30px; text-align: center; margin-bottom: 80px; position: relative; overflow: hidden; }
+        .cta-banner h2 { font-size: 2rem; margin-bottom: 15px; }
+        .cta-banner p { color: var(--text-muted); margin-bottom: 25px; font-size: 1.1rem; max-width: 500px; margin-left: auto; margin-right: auto; }
+
+        @media (max-width: 992px) { .article-grid { grid-template-columns: repeat(2, 1fr); } }
+        @media (max-width: 768px) { .feature-grid, .article-grid { grid-template-columns: 1fr; } .section-header { flex-direction: column; align-items: flex-start; gap: 10px; } }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="container navbar">
+            <a href="index.html" class="logo">Play<span>Pass</span></a>
+            <ul class="nav-links">
+                <li><a href="index.html" style="color: var(--text-main);">Beranda</a></li>
+                <li><a href="katalog.html">Katalog</a></li>
+                <li><a href="arsip-artikel.html">Artikel</a></li>
+                <li><a href="history.html">Histori</a></li>
+            </ul>
+            <div class="nav-actions">
+                <button class="btn-search-icon" onclick="openSearchModal()" title="Cari Game">🔍</button>
+                <a href="keranjang.html" class="btn-cart">🛒 <span class="cart-badge">1</span></a>
+                <a href="dashboard.html" class="btn btn-outline">Masuk</a>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        <section class="hero">
+            <h1>Top Up Game <span>Super Kilat</span></h1>
+            <p>Main tanpa hambatan. Top up voucher game favoritmu dalam hitungan detik. Tanpa ribet, langsung masuk!</p>
+
+            <div class="feature-grid">
+                <div class="feature">
+                    <h4>Instan</h4>
+                    <p>Top up langsung masuk dalam hitungan detik.</p>
+                </div>
+                <div class="feature">
+                    <h4>Aman</h4>
+                    <p>Transaksi terenkripsi dan terverifikasi.</p>
+                </div>
+                <div class="feature">
+                    <h4>Terpercaya</h4>
+                    <p>Banyak orang telah mempercayakan top up di sini.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="popular-section">
+            <div class="section-header">
+                <h2>Game Terpopuler</h2>
+                <a href="katalog.html">Lihat Semua Game ➜</a>
+            </div>
+            
+            <div class="game-grid">
+                <a href="detail-produk.html" class="game-card">
+                    <div class="game-img-container"><img src="assets/images/mlbb.png" alt="Mobile Legends"></div>
+                    <h3>Mobile Legends</h3><div class="publisher">Moonton</div>
+                </a>
+                <a href="#" class="game-card">
+                    <div class="game-img-container"><img src="assets/images/ff.png" alt="Free Fire"></div>
+                    <h3>Free Fire</h3><div class="publisher">Garena</div>
+                </a>
+                <a href="detail-produk.html" class="game-card">
+                    <div class="game-img-container"><img src="assets/images/pubg.png" alt="PUBG Mobile"></div>
+                    <h3>PUBG Mobile</h3><div class="publisher">Tencent</div>
+                </a>
+                <a href="#" class="game-card">
+                    <div class="game-img-container"><img src="assets/images/GI.png" alt="Genshin Impact"></div>
+                    <h3>Genshin Impact</h3><div class="publisher">HoYoverse</div>
+                </a>
+                <a href="#" class="game-card">
+                    <div class="game-img-container"><img src="assets/images/valo.png" alt="Valorant"></div>
+                    <h3>Valorant</h3><div class="publisher">Riot Games</div>
+                </a>
+            </div>
+        </section>
+
+        <section class="latest-articles">
+            <div class="section-header">
+                <h2>Info & Promo Terbaru</h2>
+                <a href="arsip-artikel.html">Lihat Semua Artikel ➜</a>
+            </div>
+
+            <div class="article-grid">
+                <a href="detail-artikel.html" class="article-card">
+                    <img src="https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&w=600&q=80" alt="Berita MLBB" class="article-img">
+                    <div class="article-content">
+                        <span class="article-badge">Berita Terbaru</span>
+                        <h2 class="article-title">Update Patch 1.8.44 Mobile Legends: Hero Ini Kena Nerf!</h2>
+                        <p class="article-excerpt">Moonton baru saja merilis patch terbaru yang mengubah META secara drastis...</p>
+                    </div>
+                </a>
+                <a href="detail-artikel.html" class="article-card">
+                    <img src="https://images.unsplash.com/photo-1605901309584-818e25960b8f?auto=format&fit=crop&w=600&q=80" alt="Promo PUBG" class="article-img">
+                    <div class="article-content">
+                        <span class="article-badge" style="background: rgba(245, 158, 11, 0.15); color: #F59E0B; border-color: rgba(245, 158, 11, 0.3);">Promo Spesial</span>
+                        <h2 class="article-title">Flash Sale Akhir Bulan! Top Up UC PUBG Mobile Cashback 50%</h2>
+                        <p class="article-excerpt">Jangan sampai ketinggalan event Flash Sale bulan ini. Dapatkan cashback saldo GoPay...</p>
+                    </div>
+                </a>
+                <a href="detail-artikel.html" class="article-card">
+                    <img src="https://images.unsplash.com/photo-1538481199705-c710c4e965fc?auto=format&fit=crop&w=600&q=80" alt="Tips Valorant" class="article-img">
+                    <div class="article-content">
+                        <span class="article-badge" style="background: rgba(16, 185, 129, 0.15); color: #10B981; border-color: rgba(16, 185, 129, 0.3);">Tips & Trik</span>
+                        <h2 class="article-title">5 Settingan Crosshair Valorant Terbaik ala Pro Player VCT</h2>
+                        <p class="article-excerpt">Ingin aim kamu setajam TenZ? Cobain 5 kode crosshair rahasia ini agar headshot mudah...</p>
+                    </div>
+                </a>
+            </div>
+        </section>
+
+        <section class="cta-banner">
+            <h2>Belum Punya Akun PlayPass?</h2>
+            <p>Daftar sekarang juga dan nikmati diskon spesial untuk transaksi pertamamu, serta kumpulkan poin hadiahnya!</p>
+            <a href="login.html" class="btn btn-primary" style="font-size: 1.1rem; padding: 12px 30px;">Daftar Sekarang Gratis</a>
+        </section>
+
+    </main>
+
+    <footer>
+        <div class="container footer-content">
+            <a href="index.html" class="logo">Play<span>Pass</span></a>
+            <p class="footer-text">Top up game cepat, aman, dan tanpa ribet. Layanan pelanggan 24/7.</p>
+            <p class="footer-text">© 2026 All Rights Reserved | Made by PLAYPASS</p>
+        </div>
+    </footer>
+
+    <div id="searchModal" class="search-modal">
+        <div class="search-modal-content">
+            <div class="search-modal-header">
+                <span style="font-size: 1.2rem; color: var(--text-muted);">🔍</span>
+                <input type="text" id="searchInput" placeholder="Cari game (misal: Mobile Legends)..." onkeyup="liveSearch()">
+                
+                <button onclick="goToSearchPage()" style="background-color: #b937f5; color: white; border: none; padding: 8px 20px; border-radius: 6px; font-weight: bold; cursor: pointer; margin-right: 10px; transition: 0.3s;">
+                    Cari
+                </button>
+                
+                <button class="close-btn" onclick="closeSearchModal()">✖</button>
+            </div>
+            <div class="search-results" id="searchResults">
+                <div style="padding: 20px; text-align: center; color: var(--text-muted);">Ketik nama game untuk mencari...</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const searchModal = document.getElementById('searchModal');
+        const searchInput = document.getElementById('searchInput');
+        const searchResults = document.getElementById('searchResults');
+        const dummyGames = [
+            { name: "Mobile Legends: Bang Bang", pub: "Moonton", img: "assets/images/mlbb2.png", link: "detail-produk.html" },
+            { name: "Valorant", pub: "Riot Games", img: "assets/images/valo.png", link: "#" },
+            { name: "PUBG Mobile", pub: "Tencent", img: "assets/images/pubg.png", link: "detail-produk.html" },
+            { name: "Genshin Impact", pub: "HoYoverse", img: "assets/images/GI.png", link: "#" },
+            { name: "Free Fire", pub: "Garena", img: "assets/images/ff.png", link: "#" },
+            { name: "Honor of Kings", pub: "Level Infinite", img: "assets/images/hok.png", link: "#" },
+            { name: "eFootball", pub: "Konami", img: "assets/images/efb.png", link: "#" }
+        ];
+
+        function openSearchModal() { searchModal.style.display = 'flex'; searchInput.focus(); }
+        function closeSearchModal() { searchModal.style.display = 'none'; searchInput.value = ''; searchResults.innerHTML = '<div style="padding: 20px; text-align: center; color: var(--text-muted);">Ketik nama game untuk mencari...</div>'; }
+       
+        function goToSearchPage() {
+            const query = document.getElementById('searchInput').value;
+            if(query.trim() !== '') {
+                window.location.href = 'search.html?q=' + encodeURIComponent(query);
+            } else {
+                window.location.href = 'search.html';
+            }
+        }
+
+        function liveSearch() {
+            const query = searchInput.value.toLowerCase();
+            searchResults.innerHTML = ''; 
+            if (query.trim() === '') {
+                searchResults.innerHTML = '<div style="padding: 20px; text-align: center; color: var(--text-muted);">Ketik nama game untuk mencari...</div>';
+                return;
+            }
+            const filtered = dummyGames.filter(game => game.name.toLowerCase().includes(query));
+            if (filtered.length === 0) {
+                searchResults.innerHTML = '<div style="padding: 20px; text-align: center; color: var(--text-muted);">Game tidak ditemukan.</div>';
+                return;
+            }
+            filtered.forEach(game => {
+                const item = document.createElement('a'); item.href = game.link; item.className = 'result-item';
+                item.innerHTML = `<img src="${game.img}" alt="${game.name}"><div class="result-info"><h4>${game.name}</h4><p>${game.pub}</p></div>`;
+                searchResults.appendChild(item);
+            });
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kelola Pengguna | Admin PlayPass</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body { background-color: var(--bg-dark); margin: 0; display: flex; min-height: 100vh; }
+        .admin-sidebar { width: 260px; background-color: var(--bg-card); border-right: 1px solid #2A3241; display: flex; flex-direction: column; position: fixed; height: 100vh; overflow-y: auto; z-index: 100;}
+        .sidebar-logo { padding: 25px 20px; font-size: 24px; font-weight: bold; color: var(--text-main); text-decoration: none; border-bottom: 1px solid #2A3241; margin-bottom: 20px; }
+        .sidebar-logo span { color: var(--accent); }
+        .sidebar-menu { list-style: none; padding: 0 15px; display: flex; flex-direction: column; gap: 5px; }
+        .sidebar-menu li a { display: flex; align-items: center; padding: 12px 15px; color: var(--text-muted); text-decoration: none; border-radius: 8px; font-weight: 500; transition: 0.3s; }
+        .sidebar-menu li a:hover, .sidebar-menu li a.active { background-color: var(--accent); color: white; }
+        .sidebar-footer { margin-top: auto; padding: 20px 15px; border-top: 1px solid #2A3241; }
+        .btn-logout { width: 100%; padding: 10px; background-color: transparent; color: #EF4444; border: 1px solid #EF4444; border-radius: 8px; cursor: pointer; font-weight: bold; transition: 0.3s; }
+        .btn-logout:hover { background-color: #EF4444; color: white; }
+
+        .admin-main { flex: 1; margin-left: 260px; padding: 30px 40px; }
+        .admin-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        .admin-header h1 { font-size: 2rem; color: var(--text-main); margin: 0; }
+
+        .toolbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; background-color: var(--bg-card); padding: 20px; border-radius: 12px; border: 1px solid #2A3241; }
+        .search-box { display: flex; gap: 10px; flex: 1; max-width: 500px; }
+        .search-box input { flex: 1; padding: 10px 15px; background-color: var(--bg-dark); border: 1px solid #2A3241; border-radius: 8px; color: var(--text-main); outline: none; }
+        .search-box input:focus { border-color: var(--accent); }
+        .filter-select { padding: 10px 15px; background-color: var(--bg-dark); border: 1px solid #2A3241; border-radius: 8px; color: var(--text-main); outline: none; cursor: pointer; }
+
+        .btn-add { background-color: var(--accent); color: white; padding: 12px 20px; border-radius: 8px; border: none; cursor: pointer; font-weight: bold; transition: 0.3s; display: flex; align-items: center; gap: 8px; }
+        .btn-add:hover { background-color: var(--accent-hover); }
+
+        .table-container { background-color: var(--bg-card); border: 1px solid #2A3241; border-radius: 12px; padding: 20px; overflow-x: auto; }
+        table { width: 100%; border-collapse: collapse; text-align: left; }
+        th { padding: 15px; border-bottom: 2px solid #2A3241; color: var(--text-muted); font-weight: 600; }
+        td { padding: 15px; border-bottom: 1px solid #2A3241; color: var(--text-main); vertical-align: middle; }
+        tr:hover td { background-color: rgba(124, 58, 237, 0.05); }
+
+        .user-info { display: flex; align-items: center; gap: 15px; }
+        .user-info img { width: 45px; height: 45px; border-radius: 50%; object-fit: cover; border: 2px solid #2A3241; }
+        .user-info div h4 { margin: 0 0 3px 0; font-size: 1rem; color: var(--text-main); }
+        .user-info div p { margin: 0; font-size: 0.85rem; color: var(--text-muted); }
+
+        .badge-admin { padding: 5px 10px; border-radius: 6px; font-size: 0.8rem; font-weight: bold; }
+        
+        .role-admin { background-color: rgba(124, 58, 237, 0.15); color: var(--accent); }
+        .role-user { background-color: rgba(59, 130, 246, 0.15); color: #3B82F6; }
+        
+        .status-active { background-color: rgba(16, 185, 129, 0.15); color: #10B981; }
+        .status-banned { background-color: rgba(239, 68, 68, 0.15); color: #EF4444; }
+
+        .action-btns { display: flex; gap: 10px; }
+        .btn-act { padding: 6px 12px; border-radius: 6px; font-size: 0.85rem; font-weight: bold; border: none; cursor: pointer; transition: 0.2s; }
+        .btn-edit { background-color: transparent; color: var(--accent); border: 1px solid var(--accent); }
+        .btn-edit:hover { background-color: var(--accent); color: white; }
+        .btn-ban { background-color: transparent; color: #EF4444; border: 1px solid #EF4444; }
+        .btn-ban:hover { background-color: #EF4444; color: white; }
+
+        .crud-modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(11, 15, 25, 0.85); backdrop-filter: blur(5px); justify-content: center; align-items: center; }
+        .crud-modal-content { background-color: var(--bg-card); width: 90%; max-width: 450px; border-radius: 12px; border: 1px solid #2A3241; overflow: hidden; box-shadow: 0 20px 40px rgba(0,0,0,0.5); padding: 30px; }
+        .crud-modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 1px solid #2A3241; padding-bottom: 15px; }
+        .crud-modal-header h2 { margin: 0; font-size: 1.5rem; color: var(--text-main); }
+        .form-group { margin-bottom: 15px; }
+        .form-group label { display: block; margin-bottom: 8px; color: var(--text-muted); font-size: 0.9rem; }
+        .form-input { width: 100%; padding: 12px 15px; background-color: var(--bg-dark); border: 1px solid #2A3241; border-radius: 8px; color: var(--text-main); outline: none; }
+        .form-input:focus { border-color: var(--accent); }
+        select.form-input { cursor: pointer; }
+        .modal-footer { display: flex; justify-content: flex-end; gap: 10px; margin-top: 25px; }
+    </style>
+</head>
+<body>
+
+    <aside class="admin-sidebar">
+        <a href="index.html" class="sidebar-logo">Play<span>Pass</span> <span style="font-size: 0.8rem; color: white;">ADMIN</span></a>
+        <ul class="sidebar-menu">
+            <li><a href="dashboard.html">📊 Dashboard</a></li>
+            <li><a href="kelola-transaksi.html">🛒 Kelola Transaksi</a></li>
+            <li><a href="kelola-produk.html">📦 Kelola Produk</a></li>
+            <li><a href="kelola-artikel.html">📝 Kelola Artikel</a></li>
+            <li><a href="kelola-pengguna.html" class="active">👥 Kelola Pengguna</a></li>
+        </ul>
+        <div class="sidebar-footer">
+            <button class="btn-logout" onclick="window.location.href='index.html'">🚪 Keluar</button>
+        </div>
+    </aside>
+
+    <main class="admin-main">
+        <header class="admin-header">
+            <h1>Kelola Pengguna</h1>
+        </header>
+
+        <div class="toolbar">
+            <div class="search-box">
+                <input type="text" id="searchUser" placeholder="Cari nama atau email pengguna..." oninput="renderTable()">
+                <select id="filterRole" class="filter-select" onchange="renderTable()">
+                    <option value="all">Semua Role</option>
+                    <option value="Admin">Admin</option>
+                    <option value="User">User Biasa</option>
+                </select>
+            </div>
+            <button class="btn-add" onclick="openAddModal()">
+                <span>➕</span> Tambah Admin/User
+            </button>
+        </div>
+
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Profil Pengguna</th>
+                        <th>Role</th>
+                        <th>Status Akun</th>
+                        <th>Tanggal Daftar</th>
+                        <th>Aksi</th>
+                    </tr>
+                </thead>
+                <tbody id="userTableBody">
+                    </tbody>
+            </table>
+        </div>
+    </main>
+
+    <div id="crudModal" class="crud-modal">
+        <div class="crud-modal-content">
+            <div class="crud-modal-header">
+                <h2 id="modalTitle">Tambah Pengguna</h2>
+                <button class="btn-act" onclick="closeModal()" style="background:transparent; color:white; border:none; font-size:1.2rem; cursor:pointer;">✖</button>
+            </div>
+            <form id="crudForm" onsubmit="saveUser(event)">
+                <input type="hidden" id="editIndex" value="-1">
+                
+                <div class="form-group">
+                    <label>Nama Lengkap</label>
+                    <input type="text" id="inputName" class="form-input" required placeholder="Contoh: Budi Santoso">
+                </div>
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="email" id="inputEmail" class="form-input" required placeholder="budi@email.com">
+                </div>
+                <div class="form-group">
+                    <label>Role (Hak Akses)</label>
+                    <select id="inputRole" class="form-input">
+                        <option value="User">User Biasa</option>
+                        <option value="Admin">Admin</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Status Akun</label>
+                    <select id="inputStatus" class="form-input">
+                        <option value="Aktif">Aktif</option>
+                        <option value="Banned">Banned (Diblokir)</option>
+                    </select>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline" onclick="closeModal()">Batal</button>
+                    <button type="submit" class="btn btn-primary">Simpan Data</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        let users = [
+            { name: 'PlayPass Super Admin', email: 'admin@playpass.com', role: 'Admin', status: 'Aktif', date: '01 Jan 2026' },
+            { name: 'Budi Santoso', email: 'budi.santoso@gmail.com', role: 'User', status: 'Aktif', date: '15 Mei 2026' },
+            { name: 'Siti Aminah', email: 'sitiaminah99@yahoo.com', role: 'User', status: 'Aktif', date: '02 Jun 2026' },
+            { name: 'Agus Gaming', email: 'agus.proplayer@gmail.com', role: 'User', status: 'Banned', date: '10 Jun 2026' },
+            { name: 'Rina Chan', email: 'rina.chan@outlook.com', role: 'User', status: 'Aktif', date: '12 Jun 2026' }
+        ];
+
+        const tableBody = document.getElementById('userTableBody');
+        const modal = document.getElementById('crudModal');
+        const crudForm = document.getElementById('crudForm');
+
+        function getAvatarUrl(name) {
+            return `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=2A3241&color=fff`;
+        }
+
+        function renderTable() {
+            const searchQuery = document.getElementById('searchUser').value.toLowerCase();
+            const roleQuery = document.getElementById('filterRole').value;
+            tableBody.innerHTML = ''; 
+
+            users.forEach((user, index) => {
+                const matchSearch = user.name.toLowerCase().includes(searchQuery) || user.email.toLowerCase().includes(searchQuery);
+                const matchRole = roleQuery === 'all' || user.role === roleQuery;
+
+                if (matchSearch && matchRole) {
+                    let roleBadge = user.role === 'Admin' 
+                        ? '<span class="badge-admin role-admin">Admin</span>' 
+                        : '<span class="badge-admin role-user">User Biasa</span>';
+                        
+                    let statusBadge = user.status === 'Aktif' 
+                        ? '<span class="badge-admin status-active">Aktif</span>' 
+                        : '<span class="badge-admin status-banned">Banned</span>';
+
+                    let banBtnText = user.status === 'Aktif' ? 'Blokir' : 'Buka Blokir';
+                    let banBtnAction = `toggleBan(${index})`;
+
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td>
+                            <div class="user-info">
+                                <img src="${getAvatarUrl(user.name)}" alt="${user.name}">
+                                <div>
+                                    <h4>${user.name}</h4>
+                                    <p>${user.email}</p>
+                                </div>
+                            </div>
+                        </td>
+                        <td>${roleBadge}</td>
+                        <td>${statusBadge}</td>
+                        <td><span style="color: var(--text-muted); font-size: 0.9rem;">${user.date}</span></td>
+                        <td>
+                            <div class="action-btns">
+                                <button class="btn-act btn-edit" onclick="openEditModal(${index})">Edit</button>
+                                <button class="btn-act btn-ban" onclick="${banBtnAction}">${banBtnText}</button>
+                            </div>
+                        </td>
+                    `;
+                    tableBody.appendChild(tr);
+                }
+            });
+        }
+
+        function openAddModal() {
+            document.getElementById('modalTitle').innerText = "Tambah Pengguna Baru";
+            document.getElementById('editIndex').value = "-1"; 
+            crudForm.reset(); 
+            modal.style.display = 'flex';
+        }
+
+        function openEditModal(index) {
+            document.getElementById('modalTitle').innerText = "Edit Data Pengguna";
+            document.getElementById('editIndex').value = index; 
+            
+            const user = users[index];
+            document.getElementById('inputName').value = user.name;
+            document.getElementById('inputEmail').value = user.email;
+            document.getElementById('inputRole').value = user.role;
+            document.getElementById('inputStatus').value = user.status;
+
+            modal.style.display = 'flex';
+        }
+
+        function saveUser(event) {
+            event.preventDefault(); 
+            const index = document.getElementById('editIndex').value;
+            
+            const today = new Date().toLocaleDateString('id-ID', { day: '2-digit', month: 'short', year: 'numeric' });
+
+            const newData = {
+                name: document.getElementById('inputName').value,
+                email: document.getElementById('inputEmail').value,
+                role: document.getElementById('inputRole').value,
+                status: document.getElementById('inputStatus').value,
+                date: index === "-1" ? today : users[index].date 
+            };
+
+            if (index === "-1") {
+                users.push(newData);
+                alert("Pengguna baru berhasil ditambahkan!");
+            } else {
+                users[index] = newData;
+                alert("Data pengguna berhasil diperbarui!");
+            }
+
+            closeModal();
+            renderTable(); 
+        }
+
+        function toggleBan(index) {
+            const user = users[index];
+            if(user.role === 'Admin' && index === 0) {
+                alert("Peringatan: Anda tidak dapat memblokir akun Super Admin!");
+                return;
+            }
+
+            if (user.status === 'Aktif') {
+                if(confirm(`Yakin ingin memblokir akses login untuk ${user.name}?`)) {
+                    users[index].status = 'Banned';
+                }
+            } else {
+                if(confirm(`Buka kembali blokir untuk ${user.name}?`)) {
+                    users[index].status = 'Aktif';
+                }
+            }
+            renderTable(); 
+        }
+
+        function closeModal() { modal.style.display = 'none'; }
+
+        renderTable();
+    </script>
+</body>
+</html>
